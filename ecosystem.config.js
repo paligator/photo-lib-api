@@ -18,7 +18,7 @@ module.exports = {
 	}],
 
 	deploy: {
-		api-production: {
+		production: {
 			user: 'photolib',
 			key: '/c/Users/pavol.zelenka/.ssh/paligator.pem',
 			host: '192.168.1.11',
