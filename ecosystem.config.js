@@ -25,7 +25,6 @@ module.exports = {
 			ref: 'origin/master',
 			repo: 'git@github.com:paligator/photo-lib-api.git',
 			path: '/home/photolib/photo-lib/photo-lib-api',
-			'pre-setup': 'cd /home/photolib/photo-lib/photo-lib-api && git checkout .',
 			'post-deploy': 'cd /home/photolib/photo-lib/photo-lib-api && npm install && tsc && pm2 reload ecosystem.config.js --env production'
 		}
 	}
