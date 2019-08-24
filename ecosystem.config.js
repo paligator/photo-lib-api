@@ -20,8 +20,8 @@ module.exports = {
 	deploy: {
 		production: {
 			user: 'photolib',
-			key: '/c/Users/pavol.zelenka/.ssh/paligator.pem',
 			host: '192.168.1.11',
+			key: '/c/Users/pavol.zelenka/.ssh/paligator.pem',
 			ref: 'origin/master',
 			repo: 'git@github.com:paligator/photo-lib-api.git',
 			path: '/home/photolib/photo-lib/photo-lib-api',
