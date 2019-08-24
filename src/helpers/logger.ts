@@ -8,7 +8,7 @@ let myLogger: winston.Logger;
 //TODO: rework to class
 
 function setCustomColors() {
-	const customColors = {
+	const customColors: any = {
 		silly: "grey",
 		debug: "gray"
 	};
