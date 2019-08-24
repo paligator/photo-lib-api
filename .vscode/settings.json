@@ -1,0 +1,10 @@
+{
+	"search.exclude": {
+		"**/bower_components": false,
+		"**/node_modules": false,
+		"**/node_modules/**": true
+	},
+	"eslint.alwaysShowStatus": true,
+	"eslint.autoFixOnSave": true,
+	"eslint.provideLintTask": true
+}

@@ -1,0 +1,5 @@
+//TODO: TODO tree plugin doesn't find in JSON
+//TODO: http://localhost:8888/graphql playground only in dev
+//TODO:!!!!  move secrets somewhere out !!!!
+//TODO: think about secure images
+//TODO: swagger

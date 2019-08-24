@@ -1,0 +1,38 @@
+{
+	// See https://go.microsoft.com/fwlink/?LinkId=733558
+	// for the documentation about the tasks.json format
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "moj tsc BUILD",
+			"type": "typescript",
+			"tsconfig": "tsconfig.json",
+			"problemMatcher": [
+				"$tsc"
+			]
+		},
+		{
+			"label": "moj tsc WATCH 11",
+			"type": "typescript",
+			"tsconfig": "tsconfig.json",
+			"problemMatcher": [
+				"$tsc-watch"
+			],
+			"isBackground": true
+		},
+		{
+			"label": "moj NPM watch 22",
+			"type": "shell",
+			"command": "npm run tsc-watch"
+		},
+		{
+			"label": "moj NPM watch 33"
+			"type": "npm",
+			"script": "tsc-watch",
+			"problemMatcher": [
+				"$tsc-watch"
+			],
+			"isBackground": true
+		}
+	]
+}

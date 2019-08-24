@@ -1,0 +1,31 @@
+{
+  "env": "development",
+  "server": {
+    "port": 8888
+  },
+  "authorization": {
+    "tokenKey": "!;3b/S#{",
+    "tokenExpiryTime": 432000
+  },
+  "paths": {
+    "photoFolder": "Z:\\Foto",
+    "photoUrl": "http://192.168.1.11:5687"
+  },
+  "db": {
+    "connectionString": "mongodb://localhost:27017/photo-lib"
+  },
+  "redisClient": {
+    "usemock": true,
+    "host": "192.168.1.11",
+    "port": 6379,
+    "cachedImagesDatabase": 0,
+    "cachedImageTTL": 259200
+  },
+  "logger": {
+    "TODO: TODO: It would be better somwhere else, after change, there i don't want to restart": "",
+    "level": "info",
+    "colors": {
+      "info": "default"
+    }
+  }
+}

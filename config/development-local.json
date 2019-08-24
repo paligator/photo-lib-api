@@ -1,0 +1,16 @@
+{
+	"env": "development-local",
+	"server": {
+		"port": 8888
+	},
+	"paths": {
+		"photoFolder": "C:\\Workspaces\\photo-lib\\photo-lib-api\\_other\\test_photos",
+		"photoUrl": "http://78.98.51.97:5687"
+	},
+	"logger": {
+		"level": "silly",
+		"colors": {
+      "info": "black"
+    }
+	}
+}

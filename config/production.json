@@ -1,0 +1,13 @@
+{
+	"env": "production",
+	"server": {
+		"port": 8888
+	},
+	"paths": {
+		"photoFolder": "/mnt/MyBook3TB/Foto/",
+		"photoUrl": "http://78.98.51.97:5687"
+	},
+	"db": {
+		"connectionString": "mongodb://photolib:Nu5yenRcKzTBPZ2aWeXk5fZFdNR9DGJwj7RLM5Dj6k9zYgMf@ds016118.mlab.com:16118/nugat"
+	}
+}

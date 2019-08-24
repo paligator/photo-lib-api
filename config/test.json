@@ -1,0 +1,16 @@
+{
+	"env": "test",
+	"server": {
+		"port": 8888
+	},
+	"paths": {
+		"photoFolder": "C:\\Workspaces\\photo-lib\\photo-test",
+		"photoUrl": "http://78.98.51.97:5687"
+	},
+	"db": {
+		"connectionString": "mongodb://localhost:27017/photo-lib"
+	},
+	"logger": {
+		"level": "debug"
+	}
+}
