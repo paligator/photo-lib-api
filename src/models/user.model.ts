@@ -3,7 +3,8 @@ import * as C from "../helpers/common";
 import bcrypt from "bcrypt";
 import * as enums from "../helpers/enums";
 
-export interface UserInt extends Document {
+//FIXME: rename it
+export interface IUser extends Document {
 	email: string;
 	name: string;
 	validTo: Date;
@@ -25,7 +26,7 @@ export const UserSchema = new Schema({
 
 
 
-UserSchema.pre<UserInt>("save", async function (next) {
+UserSchema.pre<IUser>("save", async function (next) {
 	const user = this;
 
 	if (!user.isModified("password")) { return next(); }
@@ -57,6 +58,6 @@ UserSchema.methods.validatePassword = async function (candidatePassword: string)
 };
 
 
-const User = mongoose.model<UserInt>("User", UserSchema);
+const User = mongoose.model<IUser>("User", UserSchema);
 
 export default User;

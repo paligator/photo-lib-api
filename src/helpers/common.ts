@@ -4,6 +4,8 @@ import path from "path";
 import moment from "moment";
 
 import { getLogger } from "./logger";
+import config from "config";
+import appRootPath from "app-root-path";
 
 //Why like this, there was wrong behaviour with instnceOf https://github.com/Microsoft/TypeScript/issues/13896 when process error in application level
 class PhotoError extends Errors.HttpError {
@@ -140,6 +142,18 @@ function getMaxDate(): Date {
 	return moment("9999-12-31 23:59:59 999", "YYYY-MM-DD HH:mm:ss SSS").toDate();
 }
 
+function getPhotoLibUrl(): string {
+	return `${config.get("server.host")}:${config.get("server.port")}`;
+}
+
+/**
+ * Return relative path of file in project. No need to use path in clumsy way "../../src/routes" but just "/src/routes"
+ * @param relativePath 
+ */
+function getPath(relativePath: string): string {
+	return appRootPath.resolve(relativePath);
+}
+
 
 export {
 	PhotoError, PhotoAuthenticationError,
@@ -153,5 +167,7 @@ export {
 	logS, logD, logI, logW, logE,
 	errorToString,
 	isFile, endsWith,
-	getMaxDate
+	getMaxDate,
+	getPhotoLibUrl,
+	getPath
 };

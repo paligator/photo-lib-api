@@ -23,6 +23,7 @@ module.exports = {
 		'@typescript-eslint/indent': ['warn', 'tab'],
 		'@typescript-eslint/camelcase': ['warn', { "properties": "always" }],
 		'@typescript-eslint/explicit-function-return-type': 'off',
+		'@typescript-eslint/interface-name-prefix': 'off',
 		/*TODO toto je len docasne */
 		'@typescript-eslint/no-explicit-any': [0],
 		'linebreak-style': [

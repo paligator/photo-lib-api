@@ -16,6 +16,7 @@ app.use(cookieParser());
 app.use(cors()); /* without cors OPTIONS request wouldn't work */
 app.use(serverConfig.addExtraHeaders());
 app.use(serverConfig.logEveryRequest());
+serverConfig.addSwagger(app);
 apolloServer.applyMiddleware({ app, path: "/graphql" });
 serverConfig.crateTypeScriptRestServer(app);
 app.use(serverConfig.handleApplicationError());

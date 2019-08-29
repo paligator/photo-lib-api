@@ -1,5 +1,23 @@
 //TODO: TODO tree plugin doesn't find in JSON
+
 //TODO: http://localhost:8888/graphql playground only in dev
+
+//TODO: do types properly, not only any everywhere :(
+
 //TODO:!!!!  move secrets somewhere out !!!!
+
 //TODO: think about secure images
+
 //TODO: swagger
+
+//TODO: TESTS!!!
+
+//TODO: make order in tsc build tasks.json
+
+//TODO: some report from tsc build
+
+//TODO: package script: so many useless
+
+//TODO AUTHORIZATION : "tokenKey" PRODUCTION
+
+//TODO: create index for services

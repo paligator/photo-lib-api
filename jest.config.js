@@ -1,5 +1,11 @@
 module.exports = {
+	globals: {
+		"ts-jest": {
+			tsConfig: "./tsconfig.json",
+			diagnostics: false
+		}
+	},
 	preset: "ts-jest",
 	testEnvironment: "node",
-	rootDir: "src/test"
+	rootDir: "src/test",
 };

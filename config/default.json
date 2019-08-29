@@ -1,6 +1,7 @@
 {
   "env": "development",
   "server": {
+    "host": "http://localhost",
     "port": 8888
   },
   "authorization": {
