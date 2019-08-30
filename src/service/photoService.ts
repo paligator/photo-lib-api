@@ -97,10 +97,22 @@ class PhotoService {
 		const album: AlbumInt = await Album.findOne({ _id: albumId });
 		const fotoPath = path.join(config.get("paths.photoFolder"), album.path, photoName);
 
-		return await new Promise((resolve, reject): any => {
+		if (!fs.exists(fotoPath)) {
+			throw new C.PhotoError(`${photoName} in album ${albumId} doesn't exists`);
+		}
+
+		return await new Promise((resolve): any => {
 			new ExifImage({ image: fotoPath }, function (err: Error | null, exifData: ExifData): any {
 				if (err) {
-					reject(new C.PhotoError("Picture has no exif", err));
+
+					// FIXME: better don't use ts-ignore. And ts-ignore all error not only mentioned TS2339
+					// @ts-ignore: TS2339
+					if (err.code === "NO_EXIF_SEGMENT") {
+						C.logS(`Photo has no exif ${fotoPath}`);
+					} else {
+						C.logE(`Couldn't get exif ${fotoPath}`, err);
+					}
+					resolve({});
 				} else
 					resolve({
 						createDate: exifData.exif.CreateDate,

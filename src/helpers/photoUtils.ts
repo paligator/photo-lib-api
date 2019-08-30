@@ -1,9 +1,9 @@
 import sharp, { } from "sharp";
 import * as C from "./common";
 
-function resizePhoto(image: sharp.Sharp, outPath: string, width: number, height: number) {
+function resizePhoto(imageName: string, image: sharp.Sharp, outPath: string, width: number, height: number) {
 
-	return new Promise((resolve, reject): void => {
+	return new Promise((resolve): void => {
 
 		image
 			.resize(null, null, { width, height, fit: sharp.fit.inside })
@@ -12,7 +12,7 @@ function resizePhoto(image: sharp.Sharp, outPath: string, width: number, height:
 			.then((): void => {
 				resolve("success");
 			}).catch(e => {
-				C.logE(`Error resize image ${image.options.input.file} : `, e);
+				C.logE(`Error resize image ${imageName} : `, e);
 				resolve("error");
 			}
 			);

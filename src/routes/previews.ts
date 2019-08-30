@@ -86,12 +86,12 @@ class PreviewRoute {
 			const image = sharp(imageUrl);
 
 			if (!prevPathExists) {
-				const status = await resizePhoto(image, prevPath, 1920, 1080);
+				const status = await resizePhoto(file, image, prevPath, 1920, 1080);
 				if (status !== "success") { /* TODO: I should do something */ }
 			}
 
 			if (!thumbPathExists) {
-				const status = await resizePhoto(image, thumbPath, 150, 100);
+				const status = await resizePhoto(file, image, thumbPath, 150, 100);
 				if (status !== "success") { /* TODO: I shoul'd do something */ }
 			}
 

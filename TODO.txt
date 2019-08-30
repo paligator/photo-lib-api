@@ -21,3 +21,7 @@
 //TODO AUTHORIZATION : "tokenKey" PRODUCTION
 
 //TODO: create index for services
+
+//TODO: add more silly and debug information
+
+//TODO: error log there should be call stack of error
