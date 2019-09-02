@@ -12,6 +12,9 @@ import config from "config";
 import { RequestContext } from "../types";
 import routes from "../routes";
 
+import swaggerJSDoc from "swagger-jsdoc";
+import swaggerUi from "swagger-ui-express";
+
 function createApolloServer(): ApolloServer {
 	const apolloServer = new ApolloServer({
 		typeDefs: schema,
@@ -136,11 +139,59 @@ function addExtraHeaders() {
 	};
 }
 
+function addSwagger(app: express.Application) {
+
+	const swaggerDefinition = {
+		openapi: "3.0.0",
+		info: {
+			title: "MySQL Registration Swagger API",
+			version: "1.0.0",
+			description: "Endpoints to test the user registration routes",
+		},
+		host: C.getPhotoLibUrl(),
+		basePath: "/",
+		securityDefinitions: {
+			bearerAuth: {
+				type: "apiKey",
+				name: "Authorization",
+				scheme: "bearer",
+				in: "header",
+			},
+		},
+	};
+
+	const options = {
+		swaggerDefinition,
+		apis: [C.getPath("/src/**/*.ts")],
+	};
+
+	const swaggerSpec = swaggerJSDoc(options);
+
+	app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+	app.get("/swagger.json", (req, res) => {
+		res.setHeader("Content-Type", "application/json");
+		res.send(swaggerSpec);
+	});
+
+
+
+	// var options = {
+	// 	explorer: true
+	// };
+	// //FIXME: here shoudn't be require, do it different way
+	// // eslint-disable-next-line @typescript-eslint/no-var-requires
+	// //const swaggerDocument = require("../swagger.json");
+	// //import swaggerDocument from "../../swagger.json";
+	// app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument, options));
+}
+
 export {
 	createApolloServer,
 	logEveryRequest,
 	crateTypeScriptRestServer,
 	handleApplicationError,
 	handleUnhandledErrors,
-	addExtraHeaders
+	addExtraHeaders,
+	addSwagger
 };

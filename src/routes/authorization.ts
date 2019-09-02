@@ -2,15 +2,45 @@ import { Path, POST, Security } from "typescript-rest";
 import * as C from "../helpers/common";
 import { generateToken } from "../helpers/authorization";
 import { UserService } from "../service/userService";
-import { UserInt } from "../models/user.model";
-import { LoginData } from "../types";
+import { IUser } from "../models/user.model";
 import { UserRoles } from "../helpers/enums";
+import { LoginData } from "../types";
 
 //TODO: what about salt???
 
 @Path("/auth")
 class AuthorizationRoute {
 
+
+	/**
+ * @swagger
+ * /auth/login:
+ *   post:
+ *     tags:
+ *       - Users
+ *     name: Login
+ *     summary: Logs in a user
+ *     produces:
+ *       - application/json
+ *     consumes:
+ *       - application/json
+ *     parameters:
+ *       - name: body
+ *         in: body
+ *         schema:
+ *           $ref: '#/definitions/LoginData'
+ *     responses:
+ *       '200':
+ *         description: User found and logged in successfully
+ *         content:  # Response body
+ *           application/json:
+ *            schema: 
+ *              $ref: '#/definitions/LoginResponse' 
+ *       '401':
+ *         description: Bad username, not found in db
+ *       '403':
+ *         description: Username and password don't match
+ */
 	@Path("/login")
 	@POST
 	public async login(body: LoginData): Promise<any> {
@@ -30,7 +60,7 @@ class AuthorizationRoute {
 	@Path("/create-user")
 	@Security(UserRoles.SuperAdmin)
 	@POST
-	public async createUser(user: UserInt): Promise<any> {
+	public async createUser(user: IUser): Promise<any> {
 		await UserService.createUser(user);
 		return C.sendData();
 	}

@@ -3,6 +3,9 @@
 	"server": {
 		"port": 8888
 	},
+	"authorization": {
+		"tokenKey": "SPvTY$mCX:3<6U{2Q6cB;!n/%&U7mr7.X"
+	},
 	"paths": {
 		"photoFolder": "/mnt/MyBook3TB/Foto/",
 		"photoUrl": "http://78.98.51.97:5687"

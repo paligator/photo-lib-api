@@ -1,4 +1,4 @@
-import { UserInt } from "../models/user.model";
+import { IUser } from "../models/user.model";
 import jwt from "jsonwebtoken";
 import config from "config";
 import * as C from "../helpers/common";
@@ -8,7 +8,7 @@ import { RequestContext } from "../types";
 //TODO: move to constants
 const HEADER_NAME = "authorization";
 
-function generateToken(user: UserInt): string {
+function generateToken(user: IUser): string {
 
 	const token = jwt.sign(
 		{
