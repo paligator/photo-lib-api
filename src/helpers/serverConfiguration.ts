@@ -144,9 +144,9 @@ function addSwagger(app: express.Application) {
 	const swaggerDefinition = {
 		openapi: "3.0.0",
 		info: {
-			title: "MySQL Registration Swagger API",
+			title: "Photo-lib Swagger API",
 			version: "1.0.0",
-			description: "Endpoints to test the user registration routes",
+			description: "Endpoints to test photolib-api",
 		},
 		host: C.getPhotoLibUrl(),
 		basePath: "/",
@@ -174,16 +174,6 @@ function addSwagger(app: express.Application) {
 		res.send(swaggerSpec);
 	});
 
-
-
-	// var options = {
-	// 	explorer: true
-	// };
-	// //FIXME: here shoudn't be require, do it different way
-	// // eslint-disable-next-line @typescript-eslint/no-var-requires
-	// //const swaggerDocument = require("../swagger.json");
-	// //import swaggerDocument from "../../swagger.json";
-	// app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument, options));
 }
 
 export {

@@ -39,7 +39,6 @@ function doAuthorization(context: RequestContext, reqRole: string, operation: st
 //FIXME: return Promise<RequestContext>
 async function createContext(req: any): Promise<any> {
 
-	//TODO: only in dev
 	if (req && req.body && req.body.operationName === "IntrospectionQuery") {
 		return;
 	}

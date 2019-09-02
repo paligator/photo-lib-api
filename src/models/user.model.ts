@@ -3,7 +3,6 @@ import * as C from "../helpers/common";
 import bcrypt from "bcrypt";
 import * as enums from "../helpers/enums";
 
-//FIXME: rename it
 export interface IUser extends Document {
 	email: string;
 	name: string;

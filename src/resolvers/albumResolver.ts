@@ -1,8 +1,7 @@
-import { PhotoService } from "../service/photoService";
+import { PhotoService } from "../service";
 import { doAuthorization } from "../helpers/authorization";
 import { UserRoles } from "../helpers/enums";
 
-//TODO: new PhotoService() should be static or something else...
 export default {
 	Query: {
 		albums: async (parent: any, args: any, context: any) => {

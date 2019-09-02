@@ -2,7 +2,7 @@ import * as C from "../helpers/common";
 import User, { IUser } from "../models/user.model";
 
 
-class UserService {
+export default class UserService {
 
 	public static async findByEmail(email: string, silent: boolean = false): Promise<IUser> {
 

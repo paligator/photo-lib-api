@@ -1,4 +1,4 @@
-import { PhotoService } from "../service/photoService";
+import { PhotoService } from "../service";
 import { doAuthorization } from "../helpers/authorization";
 import { UserRoles } from "../helpers/enums";
 

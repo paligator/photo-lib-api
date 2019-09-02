@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document } from "mongoose";
 
-export interface AlbumInt extends Document {
+export interface IAlbum extends Document {
 	continent: string;
 	year: number;
 	month: number;
@@ -20,6 +20,6 @@ export const AlbumSchema = new Schema({
 }, { timestamps: true });
 
 //module.exports = mongoose.model("Albums", AlbumSchema);
-const Album = mongoose.model<AlbumInt>("Album", AlbumSchema);
+const Album = mongoose.model<IAlbum>("Album", AlbumSchema);
 
 export default Album;

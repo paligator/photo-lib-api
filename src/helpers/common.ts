@@ -27,7 +27,7 @@ class PhotoError extends Errors.HttpError {
 			this.details = statusCodeOrDetails1 || statusCodeOrDetails2;
 		}
 
-		// TODO: A22lternatively use Object.setPrototypeOf if you have an ES6 environment.
+		// TODO: Alternatively use Object.setPrototypeOf if you have an ES6 environment.
 		this.__proto__ = trueProto;
 	}
 }

@@ -5,13 +5,13 @@ import * as C from "../helpers/common";
 import config from "config";
 import fsnativ from "fs";
 import path from "path";
-import Album, { AlbumInt } from "../models/album.model";
+import Album, { IAlbum } from "../models/album.model";
 import { ExifImage, ExifData } from "exif";
 import { getRedisClient } from "../helpers/redis-client";
 
 const { ObjectID } = require("mongoose").mongo;
 
-class PhotoService {
+export default class PhotoService {
 
 	private static redis = getRedisClient();
 	private static storageUrl: string = config.get("paths.photoFolder");
@@ -94,7 +94,7 @@ class PhotoService {
 			throw new C.PhotoError("Invalid request data");
 		}
 
-		const album: AlbumInt = await Album.findOne({ _id: albumId });
+		const album: IAlbum = await Album.findOne({ _id: albumId });
 		const fotoPath = path.join(config.get("paths.photoFolder"), album.path, photoName);
 
 		if (!fs.exists(fotoPath)) {
@@ -179,7 +179,3 @@ class PhotoService {
 		}
 	}
 }
-
-export {
-	PhotoService
-};

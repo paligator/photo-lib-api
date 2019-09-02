@@ -1,13 +1,10 @@
-import { Path, GET, ContextResponse, PathParam, Security } from "typescript-rest";
+import { Path, GET, ContextResponse, PathParam } from "typescript-rest";
 import express from "express";
 import * as C from "../helpers/common";
 import config from "config";
 import fsnativ from "fs";
 import path from "path";
-import User from "../models/user.model";
 import { getRedisClient } from "../helpers/redis-client";
-import { generateToken } from "../helpers/authorization";
-import { UserRoles } from "../helpers/enums";
 
 
 @Path("/photo")

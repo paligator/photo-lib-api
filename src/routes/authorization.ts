@@ -1,10 +1,11 @@
-import { Path, POST, Security } from "typescript-rest";
+import { Path, POST, Security, ContextResponse } from "typescript-rest";
 import * as C from "../helpers/common";
 import { generateToken } from "../helpers/authorization";
 import { UserService } from "../service/userService";
 import { IUser } from "../models/user.model";
 import { UserRoles } from "../helpers/enums";
-import { LoginData } from "../types";
+import { LoginData, LoginResponse, ErrorResponse } from "../types";
+import express from "express";
 
 //TODO: what about salt???
 
@@ -32,29 +33,38 @@ class AuthorizationRoute {
  *     responses:
  *       '200':
  *         description: User found and logged in successfully
- *         content:  # Response body
+ *         content:
  *           application/json:
  *            schema: 
  *              $ref: '#/definitions/LoginResponse' 
  *       '401':
- *         description: Bad username, not found in db
- *       '403':
- *         description: Username and password don't match
+ *         description: Wrong credentials
+ *         content:
+ *           application/json:
+ *            schema: 
+ *              $ref: '#/definitions/ErrorResponse' 
  */
 	@Path("/login")
 	@POST
-	public async login(body: LoginData): Promise<any> {
+	public async login(body: LoginData, @ContextResponse res: express.Response): Promise<LoginResponse> {
 
 		const email = body.email;
 		const password = body.password;
 		const user = await UserService.findByEmail(email, true);
-		const canUserLogIn = await UserService.canUserLogIn(user, password);
 
-		if (canUserLogIn === true) {
-			const token = generateToken(user);
-			return C.sendData({ token });
+		try {
+			await UserService.canUserLogIn(user, password);
+		} catch (e) {
+			if (e instanceof C.PhotoAuthenticationError) {
+				C.logI(`User ${body.email} can not login: ${e.message}`);
+				res.statusCode = 401;
+				return new ErrorResponse(e.message);
+			}
+			throw e;
 		}
 
+		const token = generateToken(user);
+		return new LoginResponse(token);
 	}
 
 	@Path("/create-user")

@@ -48,6 +48,7 @@ class PreviewRoute {
 		}
 	}
 
+	//FIXME: get it out
 	private async findAlbum(albumId: string) {
 		if (albumId === "undefined" || !albumId) {
 			throw new C.PhotoError("Album id is not defined");
