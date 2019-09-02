@@ -3,16 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
-    "build": "tsc",
-    "debug": "nodemon --inspect ./bin/www",
-    "tsc": "tsc",
-    "tsc-watch": "tsc-watch --clearWatchOutput",
-    "dev2": "tsc-watch --onSuccess \"node ./build/App.js\"",
-    "dev": "nodemon --watch src -e ts,ejs --exec npm run dev:start",
-    "dev:start": "npm-run-all build start",
     "prod": "tsc && node ./build/App.js",
-    "swagger:edit": "swagger project edit"
+    "swagger:edit": "swagger project edit",
+    "watch": "tsc --watch --noEmit --project \".\\tsconfig.json\""
   },
   "jest": {
     "transform": {

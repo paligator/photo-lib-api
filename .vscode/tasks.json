@@ -4,35 +4,16 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
-			"label": "moj tsc BUILD",
-			"type": "typescript",
-			"tsconfig": "tsconfig.json",
-			"problemMatcher": [
-				"$tsc"
-			]
-		},
-		{
-			"label": "moj tsc WATCH 11",
-			"type": "typescript",
-			"tsconfig": "tsconfig.json",
-			"problemMatcher": [
-				"$tsc-watch"
-			],
-			"isBackground": true
-		},
-		{
-			"label": "moj NPM watch 22",
-			"type": "shell",
-			"command": "npm run tsc-watch"
-		},
-		{
-			"label": "moj NPM watch 33"
+			"label": "tsc watch",
 			"type": "npm",
-			"script": "tsc-watch",
-			"problemMatcher": [
-				"$tsc-watch"
-			],
-			"isBackground": true
+			"script": "watch",
+			"problemMatcher": "$tsc-watch",
+			"isBackground": true,
+			"presentation": {
+				"reveal": "always",
+				"revealProblems": "never",
+				"clear": true,
+			}
 		}
 	]
 }
