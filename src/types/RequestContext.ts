@@ -37,15 +37,28 @@ export interface LoginData {
  *     properties:
  *       status:
  *         type: string
- *         enum:
- *         - "success"
- *         - "error"
- *       data:
- *         type: any
+ *         enum: ["success", "error"]
  *     required:
  *       - status
  */
 export interface Response {
 	status: "success" | "error";
 	data: any;
+}
+
+/**
+ * @swagger
+ * definitions:
+ *   LoginResponse:
+ *     allOf:
+ *       - $ref: '#/definitions/Response'
+ *     type: object
+ *     properties:
+ *       data:
+ *         type: any
+ *     required:
+ *       - data
+ */
+export interface LoginResponse extends Response {
+	data: string;
 }

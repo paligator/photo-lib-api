@@ -32,8 +32,10 @@ class AuthorizationRoute {
  *     responses:
  *       '200':
  *         description: User found and logged in successfully
- *         schema:
- *           $ref: "#/definitions/Response"
+ *         content:  # Response body
+ *           application/json:
+ *            schema: 
+ *              $ref: '#/definitions/LoginResponse' 
  *       '401':
  *         description: Bad username, not found in db
  *       '403':
@@ -56,8 +58,7 @@ class AuthorizationRoute {
 	}
 
 	@Path("/create-user")
-	//TODO: DELETE COMMENT
-	//@Security(UserRoles.SuperAdmin)
+	@Security(UserRoles.SuperAdmin)
 	@POST
 	public async createUser(user: IUser): Promise<any> {
 		await UserService.createUser(user);
