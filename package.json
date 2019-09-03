@@ -1,10 +1,10 @@
 {
   "name": "photo-lib-api",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "prod": "tsc && node ./build/App.js",
-    "swagger:edit": "swagger project edit"  
+    "swagger:edit": "swagger project edit"
   },
   "jest": {
     "transform": {
