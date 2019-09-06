@@ -7,9 +7,9 @@ async function replaceSecrets() {
 
 	var args = process.argv.slice(2);
 
-	const environment = args[0];
-	const secretsConfigPath = args[1];
-	const destinationConfigPath = args[2];
+	const environment = args[2];
+	const secretsConfigPath = args[0];
+	const destinationConfigPath = args[1];
 
 	console.log(`Let's replace secrets for "${environment}" from secretsConfig "${secretsConfigPath}" to config "${destinationConfigPath}"`);
 
