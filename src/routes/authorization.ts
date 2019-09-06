@@ -1,17 +1,16 @@
-import { Path, POST, Security, ContextResponse } from "typescript-rest";
+import { Path, POST, Security, ContextResponse, ContextRequest } from "typescript-rest";
 import * as C from "../helpers/common";
 import { generateToken } from "../helpers/authorization";
 import { UserService } from "../service/userService";
 import { IUser } from "../models/user.model";
 import { UserRoles } from "../helpers/enums";
-import { LoginData, LoginResponse, ErrorResponse } from "../types";
+import { LoginData, LoginResponse, ErrorResponse, ChangePassword } from "../types";
 import express from "express";
 
 //TODO: what about salt???
 
 @Path("/auth")
 class AuthorizationRoute {
-
 
 	/**
  * @swagger
@@ -72,6 +71,17 @@ class AuthorizationRoute {
 	@POST
 	public async createUser(user: IUser): Promise<any> {
 		await UserService.createUser(user);
+		return C.sendData();
+	}
+
+	@Path("/change-password")
+	@Security()
+	@POST
+	public async changePassword(changePasswordData: ChangePassword, @ContextRequest req: express.Request): Promise<any> {
+
+		const user: IUser = await UserService.findByEmail(req.user.email);
+		await UserService.changeUserPassword(user, changePasswordData.newPassword);
+
 		return C.sendData();
 	}
 

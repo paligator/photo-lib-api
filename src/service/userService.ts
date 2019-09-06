@@ -1,7 +1,6 @@
 import * as C from "../helpers/common";
 import User, { IUser } from "../models/user.model";
-
-
+import passwordValidator from "password-validator";
 export default class UserService {
 
 	public static async findByEmail(email: string, silent: boolean = false): Promise<IUser> {
@@ -40,7 +39,26 @@ export default class UserService {
 		return true;
 	}
 
+	public static async changeUserPassword(user: IUser, newPassword: string) {
 
+		const schema = new passwordValidator();
+		schema
+			.is().min(6)
+			.is().max(20)
+			.has().uppercase()
+			.has().lowercase()
+			.has().digits()
+			.has().not().spaces();
+
+		const passwordValidationErrors = schema.validate(newPassword, { list: true });
+
+		if (passwordValidationErrors.length > 0) {
+			throw new C.PhotoError(`Password complexity is not enough: ${passwordValidationErrors}`);
+		}
+
+		user.password = newPassword;
+		await user.save();
+	}
 }
 
 export {

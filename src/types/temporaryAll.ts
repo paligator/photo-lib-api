@@ -32,6 +32,23 @@ export interface LoginData {
 /**
  * @swagger
  * definitions:
+ *   ChangePassword:
+ *     type: object
+ *     properties:
+ *       newPassword:
+ *         type: string
+ *         format: password
+ *         example: 123
+ *     required:
+ *       - newPassword
+ */
+export interface ChangePassword extends Response {
+	newPassword: string;
+}
+
+/**
+ * @swagger
+ * definitions:
  *   Response:
  *     type: object
  *     properties:

@@ -76,11 +76,10 @@ function crateTypeScriptRestServer(app: express.Application) {
 	const strategy = new Strategy(jwtConfig, (payload: any, done: (a: null, b: any) => void) => {
 		const user = {
 			roles: payload.roles,
-			username: payload.email
+			email: payload.email
 		};
 		done(null, user);
 	});
-
 
 	TypeScriptRestServer.registerAuthenticator(new PassportAuthenticator(strategy, {
 		deserializeUser: (user: string) => { JSON.parse(user); },
