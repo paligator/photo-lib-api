@@ -1,0 +1,48 @@
+ 
+limit_req_zone $binary_remote_addr zone=photolibwebLimitZone:10m rate=30r/s;
+limit_conn_zone $binary_remote_addr zone=photolibwebLimitConnZone:10m;
+
+server { 		
+		
+	listen 443 ssl default_server;
+	listen [::]:443 ssl default_server;
+	
+	server_name paligator.sk;
+
+	ssl_certificate /etc/ssl/photolib/photolib_chain.crt;
+	ssl_certificate_key /etc/ssl/photolib/photolib.key;
+		
+		
+	add_header Strict-Transport-Security "max-age=31536000; includeSubDomains";
+	add_header X-Frame-Options SAMEORIGIN;
+	add_header Referrer-Policy "strict-origin";
+	add_header Feature-Policy "accelerometer 'none'; camera 'none'; geolocation 'none'; gyroscope 'none'; magnetometer 'none'; microphone 'none'; payment 'none'; usb 'none'";
+	add_header Content-Security-Policy "style-src fonts.googleapis.com paligator.sk cdnjs.cloudflare.com 'self'";
+	add_header X-Content-Type-Options "nosniff" always;
+	
+	access_log /var/log/nginx/photo-lib-web.access.log;
+	error_log /var/log/nginx/photo-lib-web.error.log;
+	
+	#location ~* \.(gif|jpg|jpeg|png|wmv|avi|mpg|mpeg|mp4|htm|html|js|css|mp3|swf|ico|flv)$ {
+	location /static/ {
+		limit_req zone=photolibwebLimitZone burst=5 nodelay;
+		limit_conn photolibwebLimitConnZone 5;
+
+		
+		expires max;
+		proxy_set_header  X-Real-IP  $remote_addr;
+		proxy_pass http://localhost:6500;
+		proxy_ignore_headers X-Accel-Expires Expires Cache-Control;
+		proxy_store /var/www/cache$uri;
+		proxy_store_access user:rw group:rw all:r;
+	}
+	
+	location / {
+	
+		limit_req zone=photolibwebLimitZone burst=5 nodelay;
+		limit_conn photolibwebLimitConnZone 5;
+	
+		proxy_pass http://localhost:6500;			
+	}
+	
+}
