@@ -1,0 +1,8 @@
+- ngix
+
+ssl certificate "ssl_certificate /etc/ssl/photolib/photolib_chain.crt;" must be chain, it means my cert + cert of ca, you can do it with command:
+cat photolib.crt photolib_ca.crt >> photolib_chain.crt
+there was a problem with line between these two certs, you must open photolib_chain.crt and add line between them
+reason: https://gtmetrix.com would error "The SSL certificate for this site is not trusted in all web browsers"
+
+

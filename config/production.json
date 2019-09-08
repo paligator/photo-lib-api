@@ -1,7 +1,7 @@
 {
 	"env": "production",
 	"server": {
-		"port": 6005
+		"port": 6000
 	},
 	"authorization": {
 		"tokenKey": "SECRET authorization.tokenKey"

@@ -19,4 +19,4 @@ to generate swagger documentation from annotation from "typescript-rest"
 
 //TODO: add more silly and debug information
 
-//change port for production
+//only pi user can change photoso

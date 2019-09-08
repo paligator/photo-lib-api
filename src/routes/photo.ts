@@ -59,7 +59,7 @@ class PhotoRoute {
 				// to keep image in cache another X days after last read
 				this.redis.setExpire(cacheKey, this.cachedImageTTL);
 
-				res.setHeader("Cache-Control", "public, max-age=1800"); /* 1800 seconds == 30 minutes */
+				res.setHeader("Cache-Control", "public, max-age=2419200"); /* 1800 seconds == 30 minutes */
 				res.contentType("image/png");
 				res.send(Buffer.from(cachedImage));
 
@@ -73,6 +73,7 @@ class PhotoRoute {
 
 				this.redis.setValue(cacheKey, imageBuffer, this.cachedImageTTL);
 
+				res.setHeader("Cache-Control", "public, max-age=2419200"); /* 4 weeks */
 				res.contentType("image/png");
 				res.send(imageBuffer);
 
@@ -93,6 +94,7 @@ class PhotoRoute {
 			const imageBuffer = fsnativ.readFileSync(imageUrl);
 
 			res.contentType("image/png");
+			res.setHeader("Cache-Control", "public, max-age=2419200"); /* 4 weeks */
 			res.send(imageBuffer);
 
 		} catch (err) {
