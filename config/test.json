@@ -8,7 +8,7 @@
 		"photoUrl": "http://78.98.51.97:5687"
 	},
 	"db": {
-		"connectionString": "mongodb://localhost:27017/photo-lib"
+		"connectionString": "mongodb://localhost:27017/photo-lib-test"
 	},
 	"logger": {
 		"level": "debug"

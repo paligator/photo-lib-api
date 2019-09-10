@@ -10,7 +10,11 @@ export default {
 		},
 		album: async (parent: any, { id, name }: any, context: any) => {
 			doAuthorization(context, UserRoles.Guest, "Query.album");
-			return await PhotoService.getAlbum(id, name);
+			if (id) {
+				return await PhotoService.getAlbum(id, true);
+			} else {
+				return await PhotoService.getAlbumByName(name, true);
+			}
 		}
 	},
 };

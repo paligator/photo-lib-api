@@ -7,8 +7,6 @@ import { UserRoles } from "../helpers/enums";
 import { LoginData, LoginResponse, ErrorResponse, ChangePassword } from "../types";
 import express from "express";
 
-//TODO: what about salt???
-
 @Path("/auth")
 class AuthorizationRoute {
 

@@ -7,6 +7,7 @@ export interface IAlbum extends Document {
 	name: string;
 	path: string;
 	favourites: string[];
+	files: string[];
 }
 
 export const AlbumSchema = new Schema({

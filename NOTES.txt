@@ -6,3 +6,6 @@ there was a problem with line between these two certs, you must open photolib_ch
 reason: https://gtmetrix.com would error "The SSL certificate for this site is not trusted in all web browsers"
 
 
+- netdata
+basic authentication
+https://docs.nginx.com/nginx/admin-guide/security-controls/configuring-http-basic-authentication/

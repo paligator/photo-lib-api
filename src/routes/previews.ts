@@ -1,12 +1,12 @@
 import { Path, POST, QueryParam, Security } from "typescript-rest";
 import * as fs from "../helpers/fs";
 import * as C from "../helpers/common";
-import Album from "../models/album.model";
 import config from "config";
 import path from "path";
 import sharp from "sharp";
 import { resizePhoto } from "../helpers/photoUtils";
 import { UserRoles } from "../helpers/enums";
+import { PhotoService } from "../service";
 
 @Path("/preview")
 class PreviewRoute {
@@ -20,7 +20,7 @@ class PreviewRoute {
 
 			C.logI(`generateAlbumPreviews for albumId ${albumId}`);
 
-			const album = await this.findAlbum(albumId);
+			const album = await PhotoService.getAlbum(albumId, true);
 			const folder = path.join(config.get("paths.photoFolder"), album.path);
 			const filesForPrew = await fs.getImages(folder);
 			const prevFolder = path.join(folder, "prevs");
@@ -46,21 +46,6 @@ class PreviewRoute {
 		} catch (err) {
 			throw new C.PhotoError("Error generate preview", err);
 		}
-	}
-
-	//FIXME: get it out
-	private async findAlbum(albumId: string) {
-		if (albumId === "undefined" || !albumId) {
-			throw new C.PhotoError("Album id is not defined");
-		}
-
-		const album = await Album.findOne({ _id: albumId });
-
-		if (!album) {
-			throw new C.PhotoError(`Album ${albumId} doesn"t exist`);
-		}
-
-		return album;
 	}
 
 	private async generatePreviewsForGroup(list: any[], folder: string, prevFolder: string, thumbFolder: string): Promise<any> {

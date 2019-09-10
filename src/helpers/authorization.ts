@@ -4,6 +4,7 @@ import config from "config";
 import * as C from "../helpers/common";
 import * as enums from "./enums";
 import { RequestContext } from "../types";
+import bcrypt from "bcrypt";
 
 //TODO: move to constants
 const HEADER_NAME = "authorization";
@@ -77,9 +78,26 @@ async function createContext(req: any): Promise<any> {
 	}
 }
 
+async function hashPassword(password: string): Promise<string> {
+	return await bcrypt.hash(password, 10);
+}
+
+async function comparePasswords(password: string, candidatePassword: string): Promise<boolean> {
+	return new Promise((resolve): void => {
+		bcrypt.compare(candidatePassword, password, function (err: Error, isMatch: boolean) {
+
+			if (err) throw (err);
+
+			resolve(isMatch);
+		});
+	});
+}
+
 export {
 	generateToken,
 	verifyToken,
 	doAuthorization,
-	createContext
+	createContext,
+	hashPassword,
+	comparePasswords
 };

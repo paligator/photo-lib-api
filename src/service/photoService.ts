@@ -17,37 +17,48 @@ export default class PhotoService {
 	private static storageUrl: string = config.get("paths.photoFolder");
 	private static cachedImageTTL: number = parseInt(config.get("redisClient.cachedImageTTL"));
 
-	public static async getAlbum(albumId: string, albumName: string): Promise<any> {
+	public static async getAlbum(albumId: string, loadPhotos: boolean = false): Promise<IAlbum> {
 
-		if ((!albumId || albumId == "undefined") && (!albumName || albumName == "undefined")) {
+		if (!albumId || albumId == "undefined") {
 			throw new C.PhotoError("Album id is not defined");
 		}
 
-		let album;
-		if (albumId) {
-			album = await Album.findOne({ _id: new ObjectID(albumId) });
-		} else {
-			album = await Album.findOne({ name: albumName });
-		}
+		let album = await Album.findOne({ _id: new ObjectID(albumId) });
 
 		if (!album) {
-			throw new C.PhotoError(`E001: Album ${albumId || albumName} doesn't exist`);
+			throw new C.PhotoError(`E001: Album ${albumId} doesn't exist`);
 		}
 
-		const folder = path.join(config.get("paths.photoFolder"), album.path);
+		if (loadPhotos === true) {
+			album.files = await this.getAlbumPhotos(album.path);
+		}
+
+		return album;
+	}
+
+	public static async getAlbumByName(albumName: string, loadPhotos: boolean = false): Promise<IAlbum> {
+
+		if (!albumName || albumName == "undefined") {
+			throw new C.PhotoError("Album name is not defined");
+		}
+
+		let album = await Album.findOne({ name: albumName });
+
+		if (!album) {
+			throw new C.PhotoError(`E001: Album ${albumName} doesn't exist`);
+		}
+
+		if (loadPhotos === true) {
+			album.files = await this.getAlbumPhotos(album.path);
+		}
+
+		return album;
+	}
+
+	private static async getAlbumPhotos(albumPath: string) {
+		const folder = path.join(config.get("paths.photoFolder"), albumPath);
 		const files = await fs.getImages(folder);
-
-		return {
-			id: album._id,
-			name: album.name,
-			year: album.year,
-			month: album.month,
-			continent: album.continent,
-			url: `${config.get("paths.photoUrl")}/${album.path}`,
-			files: files,
-			favourites: C.meOrVal(album.favourites, [])
-		};
-
+		return files;
 	}
 
 	public static async getAlbums(): Promise<any> {

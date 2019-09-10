@@ -1,7 +1,8 @@
 import mongoose, { Schema, Document } from "mongoose";
 import * as C from "../helpers/common";
-import bcrypt from "bcrypt";
 import * as enums from "../helpers/enums";
+import { hashPassword, comparePasswords } from "../helpers/authorization";
+import bcrypt from "bcrypt";
 
 export interface IUser extends Document {
 	email: string;
@@ -30,8 +31,7 @@ UserSchema.pre<IUser>("save", async function (next) {
 
 	if (!user.isModified("password")) { return next(); }
 
-	const hashedPassword = await bcrypt.hash(user.password, 10);
-	user.password = hashedPassword;
+	user.password = await hashPassword(user.password);
 	next();
 
 });
@@ -46,14 +46,7 @@ UserSchema.methods.isNotExpired = function (): boolean {
 };
 
 UserSchema.methods.validatePassword = async function (candidatePassword: string): Promise<boolean> {
-	return new Promise((resolve): void => {
-		bcrypt.compare(candidatePassword, this.password, function (err: Error, isMatch: boolean) {
-
-			if (err) throw (err);
-
-			resolve(isMatch);
-		});
-	});
+	return await comparePasswords(this.password, candidatePassword);
 };
 
 
