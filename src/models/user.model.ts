@@ -2,7 +2,6 @@ import mongoose, { Schema, Document } from "mongoose";
 import * as C from "../helpers/common";
 import * as enums from "../helpers/enums";
 import { hashPassword, comparePasswords } from "../helpers/authorization";
-import bcrypt from "bcrypt";
 
 export interface IUser extends Document {
 	email: string;
@@ -25,17 +24,13 @@ export const UserSchema = new Schema({
 }, { timestamps: true });
 
 
+UserSchema.pre<IUser>("validate", async function (next) {
+	if (this.isModified("password")) {
+		this.password = await hashPassword(this.password);
+	}
 
-UserSchema.pre<IUser>("save", async function (next) {
-	const user = this;
-
-	if (!user.isModified("password")) { return next(); }
-
-	user.password = await hashPassword(user.password);
 	next();
-
 });
-
 
 UserSchema.methods.isExpired = function (): boolean {
 	return this.validTo < new Date();

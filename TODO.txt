@@ -20,3 +20,5 @@ to generate swagger documentation from annotation from "typescript-rest"
 //TODO: add more silly and debug information
 
 //only pi user can change photoso
+
+//endpoints should be prefixed with api
