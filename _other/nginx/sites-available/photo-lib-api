@@ -6,6 +6,8 @@ limit_req_zone $binary_remote_addr zone=photolibapiPublicLimitZoneThumbs:10m rat
 limit_conn_zone $binary_remote_addr zone=photolibapiPublicLimitConnZoneThumbs:10m;
 
 server {
+
+	
 		
 	listen 6005 ssl default_server;
 	listen [::]:6005 ssl default_server;
@@ -27,7 +29,8 @@ server {
 		
 	location /photo/thumb/ {
 		
-		limit_req zone=photolibapiPublicLimitZoneThumbs burst=15 nodelay;
+		# good values 25 10
+		limit_req zone=photolibapiPublicLimitZoneThumbs burst=25 nodelay;
 		limit_conn photolibapiPublicLimitConnZoneThumbs 10;
 			
 		proxy_pass http://localhost:6000;	

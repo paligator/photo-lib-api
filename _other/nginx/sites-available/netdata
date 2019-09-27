@@ -1,0 +1,36 @@
+ 
+limit_req_zone $binary_remote_addr zone=netdataLimitZone:10m rate=1r/s;
+limit_conn_zone $binary_remote_addr zone=netdataLimitConnZone:10m;
+
+server { 		
+		
+	listen 20000 ssl default_server;
+	listen [::]:20000 ssl default_server;
+	
+	server_name paligator.sk;
+
+	ssl_certificate /etc/ssl/photolib/photolib_chain.crt;
+	ssl_certificate_key /etc/ssl/photolib/photolib.key;
+	
+	auth_basic           "Administrator’s Area";
+    auth_basic_user_file /etc/apache2/.htpasswd; 
+				
+	#add_header Strict-Transport-Security "max-age=31536000; includeSubDomains";
+	#add_header X-Frame-Options SAMEORIGIN;
+	#add_header Referrer-Policy "strict-origin";
+	#add_header Feature-Policy "accelerometer 'none'; camera 'none'; geolocation 'none'; gyroscope 'none'; magnetometer 'none'; microphone 'none'; payment 'none'; usb 'none'";
+	#add_header Content-Security-Policy "style-src fonts.googleapis.com paligator.sk cdnjs.cloudflare.com 'self'";
+	#add_header X-Content-Type-Options "nosniff" always;
+	
+	access_log /var/log/nginx/netdata.access.log;
+	error_log /var/log/nginx/netdata.error.log;
+			
+	location / {
+	
+		#limit_req zone=netdataLimitZone burst=15 nodelay;
+		#limit_conn netdataLimitConnZone 2;
+	
+		proxy_pass http://localhost:19999;			
+	}
+	
+}

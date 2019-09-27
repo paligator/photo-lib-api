@@ -17,7 +17,7 @@ server {
 	add_header X-Frame-Options SAMEORIGIN;
 	add_header Referrer-Policy "strict-origin";
 	add_header Feature-Policy "accelerometer 'none'; camera 'none'; geolocation 'none'; gyroscope 'none'; magnetometer 'none'; microphone 'none'; payment 'none'; usb 'none'";
-	add_header Content-Security-Policy "style-src fonts.googleapis.com paligator.sk cdnjs.cloudflare.com 'self'";
+	add_header Content-Security-Policy "style-src fonts.googleapis.com paligator.sk cdnjs.cloudflare.com stackpath.bootstrapcdn.com 'self' 'sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=' 'sha256-aQ1fRaPM7K+SNOdjrPtcWIYQpiz/dFsvhLkotFTG7q0='";
 	add_header X-Content-Type-Options "nosniff" always;
 	
 	access_log /var/log/nginx/photo-lib-web.access.log;
@@ -37,6 +37,14 @@ server {
 		proxy_store_access user:rw group:rw all:r;
 	}
 	
+	location /nginx {
+	
+		#limit_req zone=photolibwebLimitZone burst=5 nodelay;
+		#limit_conn photolibwebLimitConnZone 5;
+		try_files $uri $uri/ =404;
+		proxy_pass http://localhost:7890;			
+	}
+		
 	location / {
 	
 		limit_req zone=photolibwebLimitZone burst=5 nodelay;
