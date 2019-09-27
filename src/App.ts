@@ -28,9 +28,9 @@ const port = config.get("server.port");
 export const server: http.Server = app.listen(port, (): void => {
 	C.logI(`*****************            Started webserver on port ${port} with ${process.env.NODE_ENV}            *****************`);
 
-	//I really don't understand why, but without this test were failing with error: Jest has detected the following 1 open handle potentially keeping Jest from exiting:
-	server.close(function () {
-	});
+	// //I really don't understand why, but without this test were failing with error: Jest has detected the following 1 open handle potentially keeping Jest from exiting:
+	// server.close(function () {
+	// });
 });
 
 
