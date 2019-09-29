@@ -1,18 +1,18 @@
 // must be here, otherwise type-script would error TS2339, ie error TS2339: Property 'toIncludeSameMembers' does not exist on type 'Matchers<string[]>'.
 import "jest-extended";
 
-import User, { IUser, UserSchema } from "../../models/user.model";
+import User, { IUser } from "../../models/user.model";
 import * as C from "../../helpers/common";
-import request from "supertest";
-import app from "../../App";
 import * as a from "../../helpers/authorization";
 import * as database from "../../helpers/db";
+import { server } from "../../App";
 
 export let superAdminToken: string;
 
 afterAll(async (done) => {
 	C.logI("Jest.afterAll -> Cleaning after tests");
 	await database.close();
+	await server.close();
 	done();
 });
 

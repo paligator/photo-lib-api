@@ -71,14 +71,16 @@ class PreviewRoute {
 
 			const image = sharp(imageUrl);
 
-			if (!prevPathExists) {
-				const status = await resizePhoto(file, image, prevPath, 1920, 1080);
-				if (status !== "success") { /* TODO: I should do something */ }
+			//first must generate thumb then prev, because there is a problem, 
+			//I want generate thumbs without metadata(exif), but as i keep the same instance of sharp and call method withMetadata than metadata are in thumb too 
+			if (!thumbPathExists) {
+				const status = await resizePhoto(file, image, thumbPath, false, 150, 100);
+				if (status !== "success") { /* TODO: I shoul'd do something */ }
 			}
 
-			if (!thumbPathExists) {
-				const status = await resizePhoto(file, image, thumbPath, 150, 100);
-				if (status !== "success") { /* TODO: I shoul'd do something */ }
+			if (!prevPathExists) {
+				const status = await resizePhoto(file, image, prevPath, true, 1920, 1080);
+				if (status !== "success") { /* TODO: I should do something */ }
 			}
 
 			C.logD(`${file} prews generated`);

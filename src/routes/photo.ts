@@ -89,6 +89,8 @@ class PhotoRoute {
 	public async getPreview(@PathParam("imagePath") imagePath: string, @ContextResponse res: express.Response): Promise<any> {
 		try {
 
+			//await C.waitFor(4000);
+
 			const imagePathParsed = path.parse(imagePath);
 			const imageUrl = path.join(this.storageUrl, imagePathParsed.dir, "prevs", imagePathParsed.base);
 			const imageBuffer = fsnativ.readFileSync(imageUrl);
