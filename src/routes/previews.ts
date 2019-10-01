@@ -30,7 +30,7 @@ class PreviewRoute {
 				C.logI(`Delete prevs folder: ${prevFolder}`);
 				fs.rmdir(prevFolder, true);
 				C.logI(`Delete thumbs folder ${thumbFolder}`);
-				fs.mkdir(thumbFolder, true);
+				fs.rmdir(thumbFolder, true);
 			}
 
 			fs.mkdir(prevFolder);
