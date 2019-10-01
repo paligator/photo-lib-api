@@ -14,7 +14,7 @@ class PreviewRoute {
 	@Path("generate")
 	@POST
 	@Security(UserRoles.Admin)
-	public async generateAlbumPreviews(@QueryParam("id") albumId: string): Promise<any> {
+	public async generateAlbumPreviews(@QueryParam("id") albumId: string, @QueryParam("recreate") recreate: boolean): Promise<any> {
 
 		try {
 
@@ -25,6 +25,13 @@ class PreviewRoute {
 			const filesForPrew = await fs.getImages(folder);
 			const prevFolder = path.join(folder, "prevs");
 			const thumbFolder = path.join(folder, "thumbs");
+
+			if (recreate === true) {
+				C.logI(`Delete prevs folder: ${prevFolder}`);
+				fs.rmdir(prevFolder);
+				C.logI(`Delete thumbs folder ${thumbFolder}`);
+				fs.mkdir(thumbFolder);
+			}
 
 			fs.mkdir(prevFolder);
 			fs.mkdir(thumbFolder);

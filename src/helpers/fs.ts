@@ -42,6 +42,12 @@ function mkdir(path: any): void {
 	}
 }
 
+function rmdir(path: any): void {
+	if (fs.existsSync(path)) {
+		fs.rmdirSync(path);
+	}
+}
+
 function exists(path: any): boolean {
 	return fs.existsSync(path);
 }
@@ -49,6 +55,6 @@ function exists(path: any): boolean {
 
 export {
 	getImages,
-	mkdir,
+	mkdir, rmdir,
 	exists
 };
