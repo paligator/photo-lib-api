@@ -1,5 +1,6 @@
 import * as C from "../helpers/common";
 import fs from "fs";
+import rimraf from "rimraf";
 
 async function getFiles(folder: string, onlyFiles: boolean = true, extensions: any = null): Promise<any> {
 
@@ -42,9 +43,19 @@ function mkdir(path: any): void {
 	}
 }
 
-function rmdir(path: any): void {
+/**
+ * Remove folder
+ * 
+ * @param path 
+ * @param rf remove even not emtpy folder, the same as unix commadn rm -rf /aaa/bb
+ */
+function rmdir(path: any, rf: boolean = false): void {
 	if (fs.existsSync(path)) {
-		fs.rmdirSync(path);
+		if(rf === true) {
+			rimraf.sync(path);
+		} else {
+			fs.rmdirSync(path);
+		}
 	}
 }
 

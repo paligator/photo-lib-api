@@ -65,3 +65,5 @@ typings/
 
 # very senstive information, which i don't want commit into git
 config/secrets.json
+
+_other/test_photos/ethiopia_big/

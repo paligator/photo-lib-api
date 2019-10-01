@@ -28,9 +28,9 @@ class PreviewRoute {
 
 			if (recreate === true) {
 				C.logI(`Delete prevs folder: ${prevFolder}`);
-				fs.rmdir(prevFolder);
+				fs.rmdir(prevFolder, true);
 				C.logI(`Delete thumbs folder ${thumbFolder}`);
-				fs.mkdir(thumbFolder);
+				fs.mkdir(thumbFolder, true);
 			}
 
 			fs.mkdir(prevFolder);
