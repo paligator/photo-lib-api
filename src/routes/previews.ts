@@ -6,7 +6,8 @@ import path from "path";
 import sharp from "sharp";
 import { resizePhoto } from "../helpers/photoUtils";
 import { UserRoles } from "../helpers/enums";
-import { PhotoService } from "../service";
+import { AlbumService, GeneratePrevsService } from "../service";
+import { IAlbum } from "../models/album.model";
 
 @Path("/preview")
 class PreviewRoute {
@@ -16,43 +17,31 @@ class PreviewRoute {
 	@Security(UserRoles.Admin)
 	public async generateAlbumPreviews(@QueryParam("id") albumId: string, @QueryParam("recreate") recreate: boolean): Promise<any> {
 
-		try {
+		C.logI(`generateAlbumPreviews for albumId ${albumId}`);
 
-			C.logI(`generateAlbumPreviews for albumId ${albumId}`);
+		const album = await AlbumService.getAlbum(albumId, false);
+		await GeneratePrevsService.generateAlbumPreviews(album, recreate);
 
-			const album = await PhotoService.getAlbum(albumId, true);
-			const folder = path.join(config.get("paths.photoFolder"), album.path);
-			const filesForPrew = await fs.getImages(folder);
-			const prevFolder = path.join(folder, "prevs");
-			const thumbFolder = path.join(folder, "thumbs");
+	}
 
-			if (recreate === true) {
-				C.logI(`Delete prevs folder: ${prevFolder}`);
-				fs.rmdir(prevFolder, true);
-				C.logI(`Delete thumbs folder ${thumbFolder}`);
-				fs.rmdir(thumbFolder, true);
-			}
+	@Path("generate/all")
+	@POST
+	@Security(UserRoles.Admin)
+	public async generateAllAlbumPreviews(@QueryParam("recreate") recreate: boolean): Promise<any> {
 
-			fs.mkdir(prevFolder);
-			fs.mkdir(thumbFolder);
+		C.logI("generateAlbumPreviews START for all albums");
 
-			const startTime = new Date().getTime();
+		const albums = await AlbumService.getAlbums();
+		// albums.forEach(async (album: IAlbum) => {
+		// 	await GeneratePrevsService.generateAlbumPreviews(album, recreate);
+		// });
 
-			//genereate prew in groups of several images, becuase I don't want run it paralel for all images
-			const filesCount = filesForPrew.length;
-			const paralelPromises = 10;
-			for (let i = 0; i < filesCount; i += paralelPromises) {
-				const nextGroup = filesForPrew.slice(i, i + paralelPromises);
-				await this.generatePreviewsForGroup(nextGroup, folder, prevFolder, thumbFolder);
-				C.logI(`${i + 1}-${i + nextGroup.length}/${filesCount} previews are finished.`);
-			}
-
-			C.logI(`finished in ${(new Date().getTime() - startTime) / 1000} seconds`);
-
-			return C.sendData();
-		} catch (err) {
-			throw new C.PhotoError("Error generate preview", err);
+		for (var i = 0; i < albums.length; i++) {
+			await GeneratePrevsService.generateAlbumPreviews(albums[i], recreate);
 		}
+
+		C.logI("generateAlbumPreviews FINISHED for all albums");
+
 	}
 
 	private async generatePreviewsForGroup(list: any[], folder: string, prevFolder: string, thumbFolder: string): Promise<any> {

@@ -21,20 +21,6 @@ class PhotoRoute {
 
 			C.logI("ale som tu a testujem:)");
 
-			// const user = new User();
-
-			// user.email = `ahoj@palo${Math.floor((Math.random() * 10000) + 1)}.sk`;
-			// user.name = "ahoj palo";
-			// user.password = "hello";
-			// user.validTo = C.getMaxDate();
-			// user.roles = ["admin"];
-
-			// await user.save();
-
-			// const token = generateToken(user);
-
-			// return C.sendData(token);
-
 		} catch (err) {
 			throw new C.PhotoError("Problem with test", err);
 		}
@@ -43,6 +29,10 @@ class PhotoRoute {
 	@Path("thumb/:imagePath(*)")
 	@GET
 	public async getThumbnail(@PathParam("imagePath") imagePath: string, @ContextResponse res: express.Response): Promise<any> {
+
+		// if (imagePath.endsWith("2019-04-14__11-59-46__0005.JPG")) {
+		// 	throw new C.PhotoError("Umela chyba");
+		// }
 
 		try {
 
@@ -89,7 +79,11 @@ class PhotoRoute {
 	public async getPreview(@PathParam("imagePath") imagePath: string, @ContextResponse res: express.Response): Promise<any> {
 		try {
 
-			//await C.waitFor(4000);
+			// if (imagePath.endsWith("2019-04-14__11-59-46__0005.JPG")) {
+			// 	throw new C.PhotoError("Umela chyba");
+			// }
+
+			//await C.waitFor(3000);
 
 			const imagePathParsed = path.parse(imagePath);
 			const imageUrl = path.join(this.storageUrl, imagePathParsed.dir, "prevs", imagePathParsed.base);

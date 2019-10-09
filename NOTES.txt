@@ -1,3 +1,9 @@
+start applicaiton on local
+
+start mongo server
+start typescript compiler: "ctrl + shift + b" or Terminal -> "Run Build Task..." and select "photolib -> TSC watch"
+start debug: PhotoLib-Local
+
 - ngix
 
 ssl certificate "ssl_certificate /etc/ssl/photolib/photolib_chain.crt;" must be chain, it means my cert + cert of ca, you can do it with command:
