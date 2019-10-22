@@ -5,9 +5,11 @@ import * as C from "../helpers/common";
 import config from "config";
 import fsnativ from "fs";
 import path from "path";
-import Album, { IAlbum } from "../models/album.model";
+import Album, { IAlbum, IPhoto } from "../models/album.model";
 import { ExifImage, ExifData } from "exif";
 import { getRedisClient } from "../helpers/redis-client";
+import { PhotoTag } from "../helpers/enums";
+import { AlbumService } from "../service";
 
 export default class PhotoService {
 
@@ -15,27 +17,67 @@ export default class PhotoService {
 	private static storageUrl: string = config.get("paths.photoFolder");
 	private static cachedImageTTL: number = parseInt(config.get("redisClient.cachedImageTTL"));
 
-	public static async setPhotoFavourite(albumId: string, photoName: string, status: boolean): Promise<any> {
+	public static async setPhotoTags(albumId: string, photoName: string, addTags: [] = [], removeTags: any = []): Promise<any> {
 
-		const album = await Album.findOne({ _id: albumId });
+		const album: IAlbum = await Album.findOne({ _id: albumId });
 
-		const acutallyIsFavourite = album.favourites.some((photo: string): boolean => (photo === photoName));
-		let saveAlbum = false;
+		C.hasEnumValues(PhotoTag, addTags, false);
 
-		if (status === true && acutallyIsFavourite === false) {
-			album.favourites.push(photoName);
-			saveAlbum = true;
-		} else if (status === false && acutallyIsFavourite === true) {
-			C.deleteFromArray(album.favourites, photoName);
-			saveAlbum = true;
+		let photo: IPhoto = album.photos.find((photo) => { return photo.name === photoName; });
+		if (!photo) {
+			photo = {
+				name: photoName,
+				tags: addTags
+			};
+			album.photos.push(photo);
+		} else {
+			//remove tags
+			photo.tags = photo.tags.filter((tag: string) => removeTags.indexOf(tag) < 0);
+			//add tags, check duplicates
+			photo.tags.push(...addTags.filter((tag: string) => photo.tags.indexOf(tag) < 0));
 		}
 
-		if (saveAlbum === true) {
-			await album.save();
-		}
+
+		await album.save();
 
 		return true;
+	}
 
+	public static async getPhotoDetails(albumId: string, photoName: string): Promise<IPhoto> {
+		if (C.strIsEmtpy(albumId) || C.strIsEmtpy(photoName)) {
+			throw new C.PhotoError("Invalid request data");
+		}
+
+		const album: IAlbum = await Album.findOne({ _id: albumId });
+		let photo: IPhoto = album.photos.find((photo) => { return photo.name === photoName; });
+
+		return photo;
+
+	}
+
+	public static async getPhotosByTags(albumName: string, tags: string[]) {
+
+		const album: IAlbum = await AlbumService.getAlbumByName(albumName, false);
+
+		// if no tag is selected, we return all photo
+		if(!tags || tags.length === 0) {
+			return await AlbumService.getAlbumPhotos(album.path);
+		}
+
+		// filter photos by tags
+		const photos = album.photos.filter((photo: IPhoto) => photo.tags.some((tag: string) => tags.includes(tag))).map(photo => photo.name);
+
+		// get photo with no tag a check for duplicity
+		if (tags.includes("notTagged")) {
+			const allPhotos = await AlbumService.getAlbumPhotos(album.path);
+			allPhotos.forEach(file => {
+				if (!photos.includes(file)) {
+					photos.push(file);
+				}
+			});
+		}
+
+		return photos;
 	}
 
 	public static async getExifInfo(albumId: string, photoName: string): Promise<any> {
@@ -129,5 +171,5 @@ export default class PhotoService {
 		}
 	}
 
-	
+
 }

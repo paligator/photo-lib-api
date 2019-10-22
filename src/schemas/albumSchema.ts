@@ -13,7 +13,6 @@ export default gql`
     month: Int!
     name: String!
     path: String!
-    favourites: [String]
     files: [String]
     countries: [String]
   }

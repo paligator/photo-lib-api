@@ -154,6 +154,33 @@ function getPath(relativePath: string): string {
 	return appRootPath.resolve(relativePath);
 }
 
+function hasEnumValue(checkedEnum: any, value: string, silent: boolean = true): boolean {
+
+	if (!checkedEnum[value]) {
+		if (silent === true) {
+			return false;
+		} else {
+			/* TODO here should be provided Enum name */
+			throw new PhotoError(`Supported values are ${JSON.stringify(checkedEnum)}`);
+		}
+	}
+	return true;
+}
+
+
+function hasEnumValues(checkedEnum: any, values: string[], silent: boolean = true): boolean {
+
+	if ((values.some(value => !checkedEnum[value]))) {
+		if (silent === true) {
+			return false;
+		} else {
+			/* TODO here should be provided Enum name */
+			throw new PhotoError(`Supported values are ${JSON.stringify(checkedEnum)}`);
+		}
+	}
+	return true;
+}
+
 
 export {
 	PhotoError, PhotoAuthenticationError,
@@ -169,5 +196,6 @@ export {
 	isFile, endsWith,
 	getMaxDate,
 	getPhotoLibUrl,
-	getPath
+	getPath,
+	hasEnumValue, hasEnumValues
 };

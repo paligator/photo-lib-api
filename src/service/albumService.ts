@@ -46,7 +46,7 @@ export default class AlbumService {
 		return album;
 	}
 
-	private static async getAlbumPhotos(albumPath: string) {
+	public static async getAlbumPhotos(albumPath: string) {
 		const folder = path.join(config.get("paths.photoFolder"), albumPath);
 		const files = await fs.getImages(folder);
 		return files;

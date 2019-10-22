@@ -2,7 +2,6 @@ import { gql } from "apollo-server-express";
 import albumSchema from "./albumSchema";
 import exifSchema from "./exifSchema";
 import photoSchema from "./photoSchema";
-import publicSchema from "./publicSchema";
 
 const linkSchema = gql`
   
@@ -23,4 +22,4 @@ const linkSchema = gql`
 
 `;
 
-export default [linkSchema, albumSchema, exifSchema, photoSchema, publicSchema];
+export default [linkSchema, albumSchema, exifSchema, photoSchema];
