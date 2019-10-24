@@ -19,9 +19,9 @@ export default class PhotoService {
 
 	public static async setPhotoTags(albumId: string, photoName: string, addTags: [] = [], removeTags: any = []): Promise<any> {
 
-		const album: IAlbum = await Album.findOne({ _id: albumId });
-
 		C.hasEnumValues(PhotoTag, addTags, false);
+		
+		const album: IAlbum = await Album.findOne({ _id: albumId });
 
 		let photo: IPhoto = album.photos.find((photo) => { return photo.name === photoName; });
 		if (!photo) {
@@ -37,6 +37,10 @@ export default class PhotoService {
 			photo.tags.push(...addTags.filter((tag: string) => photo.tags.indexOf(tag) < 0));
 		}
 
+		//if no tags left, photo is delete at all
+		if(photo.tags.length === 0) {
+			album.photos = album.photos.filter(item => item.name !== photo.name);
+		}
 
 		await album.save();
 
@@ -67,14 +71,12 @@ export default class PhotoService {
 		// filter photos by tags
 		const photos = album.photos.filter((photo: IPhoto) => photo.tags.some((tag: string) => tags.includes(tag))).map(photo => photo.name);
 
-		// get photo with no tag a check for duplicity
+		// get not tagged photos
 		if (tags.includes("notTagged")) {
 			const allPhotos = await AlbumService.getAlbumPhotos(album.path);
-			allPhotos.forEach(file => {
-				if (!photos.includes(file)) {
-					photos.push(file);
-				}
-			});
+			photos.push(...allPhotos.filter(file => {
+				return !album.photos.some(photo => photo.name === file && photo.tags.length > 0);
+			}));
 		}
 
 		return photos;
