@@ -7,10 +7,16 @@ export default gql`
 
   extend type Query {
     photo(albumId: ID!, photoName: String!): Photo
-    photosByTags(albumName: String!, tags: [String]): [String]
+    photosByTags(albumName: String!, tags: [String]): [TagPhotoGroup]
   }
 
   type Photo {
     tags: [String]
 	}	
+
+  type TagPhotoGroup {
+    tag: String,
+    photos: [String]
+  }
+
 `;
