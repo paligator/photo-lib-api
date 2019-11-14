@@ -8,6 +8,7 @@ import { ApolloServer } from "apollo-server-express";
 import * as serverConfig from "./helpers/serverConfiguration";
 import * as http from "http";
 
+
 const app: express.Application = express();
 const apolloServer: ApolloServer = serverConfig.createApolloServer();
 
@@ -17,11 +18,13 @@ app.use(cookieParser());
 app.use(cors()); /* without cors OPTIONS request wouldn't work */
 app.use(serverConfig.addExtraHeaders());
 app.use(serverConfig.logEveryRequest());
+app.use(serverConfig.getCompression());
 serverConfig.addSwagger(app);
 apolloServer.applyMiddleware({ app, path: "/graphql" });
 serverConfig.crateTypeScriptRestServer(app);
 app.use(serverConfig.handleApplicationError());
 process.on("unhandledRejection", serverConfig.handleUnhandledErrors());
+
 
 /** Start application */
 const port = config.get("server.port");

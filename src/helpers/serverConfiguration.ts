@@ -11,6 +11,7 @@ import { PassportAuthenticator } from "typescript-rest";
 import config from "config";
 import { RequestContext } from "../types";
 import routes from "../routes";
+import compression from "compression";
 
 import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
@@ -175,6 +176,20 @@ function addSwagger(app: express.Application) {
 
 }
 
+function shouldCompress(req: any, res: any) {
+	// don't compress responses with this request header
+	if (req.headers["x-no-compression"]) {
+		return false;
+	}
+
+	// fallback to standard filter function
+	return compression.filter(req, res);
+}
+
+function getCompression() {
+	return compression({ filter: shouldCompress });
+}
+
 export {
 	createApolloServer,
 	logEveryRequest,
@@ -182,5 +197,6 @@ export {
 	handleApplicationError,
 	handleUnhandledErrors,
 	addExtraHeaders,
-	addSwagger
+	addSwagger,
+	getCompression
 };
