@@ -4,8 +4,8 @@ limit_conn_zone $binary_remote_addr zone=photolibwebLimitConnZone:10m;
 
 server { 		
 		
-	listen 443 ssl default_server;
-	listen [::]:443 ssl default_server;
+	listen 443 ssl http2 default_server;
+	listen [::]:443 ssl http2 default_server;
 	
 	server_name paligator.sk;
 
@@ -22,12 +22,22 @@ server {
 	
 	access_log /var/log/nginx/photo-lib-web.access.log;
 	error_log /var/log/nginx/photo-lib-web.error.log;
-	
-	#location ~* \.(gif|jpg|jpeg|png|wmv|avi|mpg|mpeg|mp4|htm|html|js|css|mp3|swf|ico|flv)$ {
+		
 	location /static/ {
 		limit_req zone=photolibwebLimitZone burst=5 nodelay;
 		limit_conn photolibwebLimitConnZone 5;
-
+		
+		expires max;
+		proxy_set_header  X-Real-IP  $remote_addr;
+		proxy_pass http://localhost:6500;
+		proxy_ignore_headers X-Accel-Expires Expires Cache-Control;
+		proxy_store /var/www/cache$uri;
+		proxy_store_access user:rw group:rw all:r;
+	}
+	
+	location ~* \.(json|gif|jpg|jpeg|png|wmv|avi|mpg|mpeg|mp4|htm|html|js|css|mp3|swf|ico|flv)$ {
+		limit_req zone=photolibwebLimitZone burst=5 nodelay;
+		limit_conn photolibwebLimitConnZone 5;
 		
 		expires max;
 		proxy_set_header  X-Real-IP  $remote_addr;

@@ -9,8 +9,8 @@ server {
 
 	
 		
-	listen 6005 ssl default_server;
-	listen [::]:6005 ssl default_server;
+	listen 6005 ssl http2 default_server;
+	listen [::]:6005 ssl http2 default_server;
 	
 	ssl_certificate /etc/ssl/photolib/photolib_chain.crt;
 	ssl_certificate_key /etc/ssl/photolib/photolib.key;

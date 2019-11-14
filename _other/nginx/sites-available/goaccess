@@ -1,0 +1,22 @@
+server {
+
+root /home/pi/www-goaccess;
+
+	listen 19000 ssl default_server;
+	listen [::]:19000 ssl default_server;
+	
+	server_name paligator.sk;
+
+	ssl_certificate /etc/ssl/photolib/photolib_chain.crt;
+	ssl_certificate_key /etc/ssl/photolib/photolib.key;
+	
+	auth_basic           "Administrator’s Area";
+    auth_basic_user_file /etc/apache2/.htpasswd; 
+	
+	access_log /var/log/nginx/goaccess.access.log;
+	error_log /var/log/nginx/goaccess.error.log;
+
+location / {
+
+	}
+}
