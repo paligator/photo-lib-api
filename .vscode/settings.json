@@ -6,5 +6,11 @@
 	},
 	"eslint.alwaysShowStatus": true,
 	"eslint.autoFixOnSave": true,
-	"eslint.provideLintTask": true
+	"eslint.provideLintTask": true,
+	"files.exclude": {
+		"**/.classpath": true,
+		"**/.project": true,
+		"**/.settings": true,
+		"**/.factorypath": true
+	}
 }

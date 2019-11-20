@@ -4,7 +4,7 @@ import { generateToken } from "../helpers/authorization";
 import { UserService } from "../service/userService";
 import { IUser } from "../models/user.model";
 import { UserRoles } from "../helpers/enums";
-import { LoginData, LoginResponse, ErrorResponse, ChangePassword } from "../types";
+import { LoginData, LoginResponse, ErrorResponse, ChangePassword, PhotoLibRequest } from "../types";
 import express from "express";
 
 @Path("/auth")
@@ -75,7 +75,7 @@ class AuthorizationRoute {
 	@Path("/change-password")
 	@Security()
 	@POST
-	public async changePassword(changePasswordData: ChangePassword, @ContextRequest req: express.Request): Promise<any> {
+	public async changePassword(changePasswordData: ChangePassword, @ContextRequest req: PhotoLibRequest): Promise<any> {
 
 		const user: IUser = await UserService.findByEmail(req.user.email);
 		await UserService.changeUserPassword(user, changePasswordData.newPassword);

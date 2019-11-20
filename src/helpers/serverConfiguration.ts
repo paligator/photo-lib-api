@@ -9,7 +9,7 @@ import resolvers from "../resolvers";
 import { Strategy, ExtractJwt, StrategyOptions } from "passport-jwt";
 import { PassportAuthenticator } from "typescript-rest";
 import config from "config";
-import { RequestContext } from "../types";
+import { RequestContext, RequestUser } from "../types";
 import routes from "../routes";
 import compression from "compression";
 
@@ -43,7 +43,7 @@ function createApolloServer(): ApolloServer {
 }
 
 function logEveryRequest() {
-	return morgan(function (tokens: morgan.TokenIndexer, req: express.Request, res: express.Response): string {
+	return morgan(function (tokens: morgan.TokenIndexer, req: any, res: express.Response): string {
 
 		const method = tokens.method(req, res);
 		const status: string = tokens.status(req, res);
@@ -75,7 +75,7 @@ function crateTypeScriptRestServer(app: express.Application) {
 	};
 
 	const strategy = new Strategy(jwtConfig, (payload: any, done: (a: null, b: any) => void) => {
-		const user = {
+		const user: RequestUser = {
 			roles: payload.roles,
 			email: payload.email
 		};
@@ -168,6 +168,7 @@ function addSwagger(app: express.Application) {
 	const swaggerSpec = swaggerJSDoc(options);
 
 	app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 
 	app.get("/swagger.json", (req, res) => {
 		res.setHeader("Content-Type", "application/json");

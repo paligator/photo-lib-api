@@ -1,4 +1,5 @@
 import { Schema } from "mongoose";
+import express from "express";
 
 export interface RequestContext {
 	userId: Schema.Types.ObjectId;
@@ -122,4 +123,14 @@ export class ErrorResponse extends Response {
 			message: message
 		};
 	}
+}
+
+export interface RequestUser {
+	email: string;
+	roles: [string];
+}
+
+export interface PhotoLibRequest extends express.Request {
+	user: RequestUser;
+	body: any;
 }

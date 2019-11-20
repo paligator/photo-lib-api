@@ -14,6 +14,10 @@
 				"reveal": "always",
 				"revealProblems": "never",
 				"clear": true,
+				"panel": "dedicated"
+			},
+			"runOptions": {
+				"runOn": "folderOpen"
 			}
 		}
 	]
