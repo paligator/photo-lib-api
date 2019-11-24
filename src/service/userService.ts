@@ -52,7 +52,7 @@ export default class UserService {
 
 		const passwordValidationErrors = schema.validate(newPassword, { list: true });
 
-		if (passwordValidationErrors !== true) {
+		if (passwordValidationErrors === false || (passwordValidationErrors as string[]).length > 0) {
 			throw new C.PhotoError(`Password complexity is not enough: ${passwordValidationErrors}`);
 		}
 
