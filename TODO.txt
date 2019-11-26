@@ -24,3 +24,5 @@ to generate swagger documentation from annotation from "typescript-rest"
 //endpoints should be prefixed with api
 
 //in prev are store thumbnail created by camera, would be cool to delete in order to rezise prev size
+
+//rework throw error on EventEmiter emit/on

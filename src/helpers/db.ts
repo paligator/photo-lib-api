@@ -6,7 +6,7 @@ async function connect(): Promise<string> {
 	const mongoDBUrl: string = config.get("db.connectionString");
 
 	// parameters are there to get rid of deprecation warnings in logs
-	mongoose.connect(mongoDBUrl, { useNewUrlParser: true, useFindAndModify: false, useCreateIndex: true });
+	mongoose.connect(mongoDBUrl, { useNewUrlParser: true, useFindAndModify: false, useCreateIndex: true,  useUnifiedTopology: true });
 	mongoose.Promise = global.Promise;
 	const db = mongoose.connection;
 
