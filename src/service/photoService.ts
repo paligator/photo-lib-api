@@ -53,7 +53,7 @@ export default class PhotoService {
 		}
 
 		const album: IAlbum = await Album.findOne({ _id: albumId });
-		let photo: IPhoto = album.photos.find((photo) => { return photo.name === photoName; });
+		const photo: IPhoto = album.photos.find((photo) => { return photo.name === photoName; });
 
 		return photo;
 
@@ -63,9 +63,9 @@ export default class PhotoService {
 
 		const album: IAlbum = await AlbumService.getAlbumByName(albumName, false);
 
-		// if no tag is selected, we return all photo
+		// if no tag is selected, we return no photos in category notTagged
 		if (!tags || tags.length === 0) {
-			return await AlbumService.getAlbumPhotos(album.path);
+			return [{ tag: "notTagged", photos: [] }];
 		}
 
 		const photos = [];
@@ -106,6 +106,7 @@ export default class PhotoService {
 				if (err) {
 
 					// FIXME: better don't use ts-ignore. And ts-ignore all error not only mentioned TS2339
+					// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 					// @ts-ignore: TS2339
 					if (err.code === "NO_EXIF_SEGMENT") {
 						C.logS(`Photo has no exif ${fotoPath}`);
