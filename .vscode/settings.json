@@ -12,5 +12,6 @@
 		"**/.project": true,
 		"**/.settings": true,
 		"**/.factorypath": true
-	}
+	},
+	"jest.autoEnable": false
 }

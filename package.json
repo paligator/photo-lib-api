@@ -4,19 +4,8 @@
   "private": true,
   "scripts": {
     "prod": "tsc && node ./build/App.js",
-    "swagger:edit": "swagger project edit"
-  },
-  "jest": {
-    "transform": {
-      ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"
-    },
-    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
-    "testResultsProcessor": "<rootDir>/node_modules/ts-jest/coverageprocessor.js",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js"
-    ]
+    "swagger:edit": "swagger project edit",
+    "test": "jest"
   },
   "dependencies": {
     "@types/app-root-path": "^1.2.4",
