@@ -1,19 +1,27 @@
+import "jest-extended";
 import User from "../models/user.model";
 import { IUser } from "../models/user.model";
-import * as C from "../helpers/common";
-import { UserService } from "../service/userService";
-import { hashPassword, comparePasswords } from "../helpers/authorization";
+import { comparePasswords } from "../helpers/authorization";
 import request from "supertest";
-import app from "../App";
-import * as testC from "./helpers/common.test";
+import { app } from "../App";
+import * as testC from "./helpers/testHelpers";
+import * as C from "../helpers/common";
 
-describe("first one", () => {
+describe("Athorization Test Suite", () => {
 
-	beforeEach(async () => {
-		//await testC.loadUsers();
+	beforeAll(async () => {
+		await testC.connectDb();
+		await testC.initLoginTokens();
+		await testC.loadUsers();
 	});
 
-	it("success login", async (done: any) => {
+	afterAll(async () => {
+		await testC.closeDb();
+	});
+
+	test("success login", async () => {
+		C.logI("test login");
+		expect(null).toBe(null);
 		const res = await request(app)
 			.post("/auth/login")
 			.send({
@@ -22,11 +30,9 @@ describe("first one", () => {
 			});
 
 		expect(res.status).toEqual(200);
-
-		done();
 	});
 
-	it("failed login", async (done: any) => {
+	test("failed login", async () => {
 		const res = await request(app)
 			.post("/auth/login")
 			.send({
@@ -35,8 +41,6 @@ describe("first one", () => {
 			});
 
 		expect(res.status).toEqual(401);
-
-		done();
 	});
 
 	test("create new user", async () => {
@@ -59,7 +63,6 @@ describe("first one", () => {
 		expect(gotUser.name).toBe(wantedUser.name);
 		expect(gotUser.roles).toIncludeSameMembers(wantedUser.roles);
 		expect(await comparePasswords(gotUser.password, wantedPassword)).toBe(true);
-
 	});
 
 });

@@ -15,7 +15,7 @@ export default class UserService {
 	}
 
 	public static async createUser(user: IUser): Promise<IUser> {
-		let userDb = new User({
+		const userDb = new User({
 			email: user.email,
 			name: user.name,
 			password: user.password,

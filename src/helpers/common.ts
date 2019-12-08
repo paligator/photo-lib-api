@@ -9,8 +9,10 @@ import appRootPath from "app-root-path";
 
 //Why like this, there was wrong behaviour with instnceOf https://github.com/Microsoft/TypeScript/issues/13896 when process error in application level
 class PhotoError extends Errors.HttpError {
-	private __proto__: Errors.HttpError;
-	private details: Error;
+
+	// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+	// @ts-ignore TS6133
+	private __proto__: Errors.HttpError; 	private details: Error;
 
 	public constructor(message?: string, statusCodeOrDetails1: number | any = 500, statusCodeOrDetails2: any | number = undefined) {
 		const trueProto = new.target.prototype;

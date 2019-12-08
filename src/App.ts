@@ -28,15 +28,9 @@ process.on("unhandledRejection", serverConfig.handleUnhandledErrors());
 
 /** Start application */
 const port = config.get("server.port");
-export const server: http.Server = app.listen(port, (): void => {
+const server: http.Server = app.listen(port, (): void => {
 	C.logI(`*****************            Started webserver on port ${port} with ${process.env.NODE_ENV}            *****************`);
-
-	// //I really don't understand why, but without this test were failing with error: Jest has detected the following 1 open handle potentially keeping Jest from exiting:
-	// server.close(function () {
-	// });
 });
-
-
 
 process.on("SIGTERM", () => {
 	// eslint-disable-next-line no-console
@@ -50,4 +44,4 @@ process.on("SIGTERM", () => {
 
 database.connect();
 
-export default app;
+export { app };

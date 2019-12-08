@@ -14,7 +14,7 @@ export default class AlbumService {
 			throw new C.PhotoError("Album id is not defined");
 		}
 
-		let album = await Album.findOne({ _id: new ObjectID(albumId) });
+		const album = await Album.findOne({ _id: new ObjectID(albumId) });
 
 		if (!album) {
 			throw new C.PhotoError(`E001: Album ${albumId} doesn't exist`);
@@ -33,7 +33,7 @@ export default class AlbumService {
 			throw new C.PhotoError("Album name is not defined");
 		}
 
-		let album = await Album.findOne({ name: albumName });
+		const album = await Album.findOne({ name: albumName });
 
 		if (!album) {
 			throw new C.PhotoError(`E001: Album ${albumName} doesn't exist`);

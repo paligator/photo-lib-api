@@ -10,13 +10,15 @@
     "outDir": "./build",
     "strict": true,
     "noImplicitAny": true,
+    "noImplicitReturns": true,
     "strictNullChecks": false,
+    "noUnusedLocals": true,
     "moduleResolution": "node",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "preserveWatchOutput": true,
     "resolveJsonModule": true,
-    "skipLibCheck": true,
+    "skipLibCheck": true
   },
   "lib": [
     "DOM",

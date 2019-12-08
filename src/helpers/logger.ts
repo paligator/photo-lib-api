@@ -22,6 +22,7 @@ function setCustomColors() {
 function formatSplat(info: object): string {
 	let splat: string;
 	try {
+		// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 		// @ts-ignore TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{}'.
 		const parsedSplat: string[] = info[SPLAT];
 		if (parsedSplat) {
