@@ -1,7 +1,7 @@
 import "jest-extended";
 import User from "../models/user.model";
 import { IUser } from "../models/user.model";
-import { comparePasswords } from "../helpers/authorization";
+import { comparePasswords, hashPassword } from "../helpers/authorization";
 import request from "supertest";
 import { app } from "../App";
 import * as testC from "./helpers/testHelpers";
@@ -10,13 +10,10 @@ import * as C from "../helpers/common";
 describe("Athorization Test Suite", () => {
 
 	beforeAll(async () => {
+		C.logI("before All Authorization Tests");
 		await testC.connectDb();
 		await testC.initLoginTokens();
 		await testC.loadUsers();
-	});
-
-	afterAll(async () => {
-		await testC.closeDb();
 	});
 
 	test("success login", async () => {
@@ -64,6 +61,18 @@ describe("Athorization Test Suite", () => {
 		expect(gotUser.roles).toIncludeSameMembers(wantedUser.roles);
 		expect(await comparePasswords(gotUser.password, wantedPassword)).toBe(true);
 	});
+
+	test("hash password", async () => {
+		const hashedPassword = await hashPassword("Ahoj123");
+		C.logI("Hashed password: " + hashedPassword);
+		expect(hashedPassword).not.toBeNull();
+	});
+
+	afterAll(async () => {
+		await testC.closeDb();
+		C.logI("after All Authorization Tests");
+	});
+
 
 });
 
