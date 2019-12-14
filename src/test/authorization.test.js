@@ -1,19 +1,27 @@
-import "jest-extended";
-import User from "../models/user.model";
-import { IUser } from "../models/user.model";
-import { comparePasswords, hashPassword } from "../helpers/authorization";
-import request from "supertest";
-import { app } from "../App";
-import * as testC from "./helpers/testHelpers";
-import * as C from "../helpers/common";
+require("jest-extended");
+const bcrypt = require("bcrypt");
+const request = require("supertest");
+
+const User = require("../../build/models/user.model").default;
+const { comparePasswords, hashPassword } = require("../../build/helpers/authorization");
+const { app } = require("../../build/App");
+const testC = require("./helpers/testHelpers");
+const C = require("../../build/helpers/common");
 
 describe("Athorization Test Suite", () => {
+
+	let superAdminToken;
 
 	beforeAll(async () => {
 		C.logI("before All Authorization Tests");
 		await testC.connectDb();
-		await testC.initLoginTokens();
 		await testC.loadUsers();
+		await testC.initLoginTokens();
+		superAdminToken = await testC.initLoginTokens();
+	});
+
+	beforeEach(() => {
+		jest.restoreAllMocks();
 	});
 
 	test("success login", async () => {
@@ -43,36 +51,46 @@ describe("Athorization Test Suite", () => {
 	test("create new user", async () => {
 
 		const wantedPassword = "heslo123";
-		const wantedUser: IUser = new User({
+		const wantedUser = new User({
 			name: "SuperAdmin",
 			email: "paligator@gmail.com",
 			password: wantedPassword,
 			roles: ["superAdmin", "admin", "editor"]
 		});
 
-		await request(app)
+		const res = await request(app)
 			.post("/auth/create-user")
 			.send(wantedUser)
-			.set({ "authorization": "Bearer " + testC.superAdminToken });
+			.set({ "authorization": "Bearer " + superAdminToken });
 
-		const gotUser: IUser = await User.findOne({ email: wantedUser.email });
+		expect(res.status).toBe(200);
 
+		const gotUser = await User.findOne({ email: wantedUser.email });
+		expect(gotUser).not.toBeNil();
 		expect(gotUser.name).toBe(wantedUser.name);
 		expect(gotUser.roles).toIncludeSameMembers(wantedUser.roles);
 		expect(await comparePasswords(gotUser.password, wantedPassword)).toBe(true);
 	});
 
-	test("hash password", async () => {
+	test("hash password by mock", async () => {
+
+		jest.spyOn(bcrypt, "hash").mockImplementation(() => Promise.resolve("*********"));
+
 		const hashedPassword = await hashPassword("Ahoj123");
-		C.logI("Hashed password: " + hashedPassword);
-		expect(hashedPassword).not.toBeNull();
+		C.logI("Hashed password by mock: " + hashedPassword);
+		expect(hashedPassword).toBe("*********");
+	});
+
+	test("hash password", async () => {
+		const hashedPassword22 = await hashPassword("Ahoj123");
+		C.logI("Hashed password: " + hashedPassword22);
+		expect(hashedPassword22).not.toBeNil();
 	});
 
 	afterAll(async () => {
 		await testC.closeDb();
 		C.logI("after All Authorization Tests");
 	});
-
 
 });
 

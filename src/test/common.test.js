@@ -1,7 +1,5 @@
-// must be here, otherwise type-script would error TS2339, ie error TS2339: Property 'toIncludeSameMembers' does not exist on type 'Matchers<string[]>'.
-import "jest-extended";
-import * as C from "../helpers/common";
-import * as testC from "./helpers/testHelpers";
+const testC = require("./helpers/testHelpers");
+const C = require("../../build/helpers/common");
 
 describe("Common Test Suite", () => {
 

@@ -4,11 +4,11 @@ module.exports = {
 		'node': true
 	},
 	'parser': '@typescript-eslint/parser',
-	"plugins": ['@typescript-eslint', "jest"],
+	"plugins": ['@typescript-eslint'],
 	"parserOptions": {
 		"project": "./tsconfig.json"
 	},
-	'extends': ["eslint:recommended", "plugin:@typescript-eslint/recommended", "plugin:jest/recommended"],
+	'extends': ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
 	// 'extends': ["typescript", "typescript/prettier"],
 	'globals': {
 		'Atomics': 'readonly',
