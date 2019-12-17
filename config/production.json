@@ -4,7 +4,8 @@
 		"port": 6000
 	},
 	"authorization": {
-		"tokenKey": "SECRET authorization.tokenKey"
+		"tokenKey": "SECRET authorization.tokenKey",
+		"googleOAuthClientID": "SECRET authorization.googleOAuthClientID"
 	},
 	"paths": {
 		"photoFolder": "SECRET paths.photoFolder",

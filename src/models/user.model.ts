@@ -9,6 +9,7 @@ export interface IUser extends Document {
 	validTo: Date;
 	password: string;
 	roles: string[];
+	authentication: string;
 	validatePassword(candidatePassword: string): Promise<boolean>;
 	isExpired(): boolean;
 	isNotExpired(): boolean;
@@ -17,6 +18,7 @@ export interface IUser extends Document {
 export const UserSchema = new Schema({
 	email: { type: String, unique: true },
 	name: { type: String, required: true, max: 50 },
+	authentication: { type: String, required: true, default: enums.Authentication.Password},
 	password: { type: String },
 	validTo: { type: Date, required: true, default: C.getMaxDate() },
 	//TODO: check only for enums, now any value can be set

@@ -6,7 +6,8 @@
   },
   "authorization": {
     "tokenKey": "!;3b/S#{",
-    "tokenExpiryTime": 432000
+    "tokenExpiryTime": 432000,
+    "googleOAuthClientID": "xxxxx"
   },
   "paths": {
     "photoFolder": "Z:\\Foto",

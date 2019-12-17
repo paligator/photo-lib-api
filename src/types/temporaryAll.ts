@@ -30,6 +30,10 @@ export interface LoginData {
 	password: string;
 }
 
+export interface LoginGoogleData {
+	token: string;
+}
+
 /**
  * @swagger
  * definitions:
@@ -133,4 +137,9 @@ export interface RequestUser {
 export interface PhotoLibRequest extends express.Request {
 	user: RequestUser;
 	body: any;
+}
+
+export interface GoogleTokenData {
+	email: string;
+	name: string;
 }

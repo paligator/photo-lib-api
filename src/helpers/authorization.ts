@@ -3,8 +3,9 @@ import jwt from "jsonwebtoken";
 import config from "config";
 import * as C from "../helpers/common";
 import * as enums from "./enums";
-import { RequestContext } from "../types";
+import { RequestContext, GoogleTokenData } from "../types";
 import bcrypt from "bcrypt";
+import { OAuth2Client } from "google-auth-library";
 
 //TODO: move to constants
 const HEADER_NAME = "authorization";
@@ -26,6 +27,32 @@ function generateToken(user: IUser): string {
 async function verifyToken(token: string): Promise<any> {
 	const result = await jwt.verify(token, config.get("authorization.tokenKey"));
 	return result;
+}
+
+async function parseGoogleToken(token: string): Promise<GoogleTokenData> {
+	try {
+		const googleClientID: string = config.get("authorization.googleOAuthClientID");
+		const client = new OAuth2Client(googleClientID);
+		const ticket = await client.verifyIdToken({
+			idToken: token,
+			audience: googleClientID
+		});
+
+		const payload = ticket.getPayload();
+
+		if (payload && payload.email_verified === true) {
+			const data: GoogleTokenData = {
+				email: payload.email,
+				name: payload.name
+			};
+
+			return data;
+		} else {
+			throw new C.PhotoAuthenticationError(`Google token '${token}' is not valid`);
+		}
+	} catch (e) {
+		throw new C.PhotoAuthenticationError(`Google token '${token}' cannot be decoded.`);
+	}
 }
 
 function doAuthorization(context: RequestContext, reqRole: string, operation: string = ""): boolean {
@@ -99,5 +126,6 @@ export {
 	doAuthorization,
 	createContext,
 	hashPassword,
-	comparePasswords
+	comparePasswords,
+	parseGoogleToken
 };

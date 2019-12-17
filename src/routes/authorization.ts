@@ -1,10 +1,10 @@
 import { Path, POST, Security, ContextResponse, ContextRequest } from "typescript-rest";
 import * as C from "../helpers/common";
-import { generateToken } from "../helpers/authorization";
+import { generateToken, parseGoogleToken } from "../helpers/authorization";
 import { UserService } from "../service/userService";
 import { IUser } from "../models/user.model";
-import { UserRoles } from "../helpers/enums";
-import { LoginData, LoginResponse, ErrorResponse, ChangePassword, PhotoLibRequest } from "../types";
+import { UserRoles, Authentication } from "../helpers/enums";
+import { LoginData, LoginGoogleData, LoginResponse, ErrorResponse, ChangePassword, PhotoLibRequest, GoogleTokenData } from "../types";
 import express from "express";
 
 @Path("/auth")
@@ -50,7 +50,7 @@ class AuthorizationRoute {
 		const user = await UserService.findByEmail(email, true);
 
 		try {
-			await UserService.canUserLogIn(user, password);
+			await UserService.canUserLogIn(user, password, Authentication.Password);
 		} catch (e) {
 			if (e instanceof C.PhotoAuthenticationError) {
 				C.logI(`User ${body.email} can not login: ${e.message}`);
@@ -63,6 +63,25 @@ class AuthorizationRoute {
 		const token = generateToken(user);
 		return new LoginResponse(token);
 	}
+
+	@Path("/login-google")
+	@POST
+	public async loginGoogle(body: LoginGoogleData, @ContextResponse res: express.Response): Promise<LoginResponse> {
+		try {
+			const googleTokenData: GoogleTokenData = await parseGoogleToken(body.token);
+			const user = await UserService.findUserByGoogleToken(googleTokenData);
+			const token = generateToken(user);
+			return new LoginResponse(token);
+		} catch (e) {
+			if (e instanceof C.PhotoAuthenticationError) {
+				C.logI("User can not login");
+				res.statusCode = 401;
+				return new ErrorResponse(e.message);
+			}
+			throw e;
+		}
+	}
+
 
 	@Path("/create-user")
 	@Security(UserRoles.SuperAdmin)
