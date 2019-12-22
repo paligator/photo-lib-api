@@ -67,6 +67,13 @@ class AuthorizationRoute {
 	@Path("/login-google")
 	@POST
 	public async loginGoogle(body: LoginGoogleData, @ContextResponse res: express.Response): Promise<LoginResponse> {
+
+		// if (process.env.NODE_ENV === "development-local") {
+		// 	const user = await UserService.findByEmail("paligator@gmail.com");
+		// 	const token = generateToken(user);
+		// 	return new LoginResponse(token);
+		// }
+
 		try {
 			const googleTokenData: GoogleTokenData = await parseGoogleToken(body.token);
 			const user = await UserService.findUserByGoogleToken(googleTokenData);
@@ -74,7 +81,7 @@ class AuthorizationRoute {
 			return new LoginResponse(token);
 		} catch (e) {
 			if (e instanceof C.PhotoAuthenticationError) {
-				C.logI("User can not login");
+				C.logE("User can not login: ", e);
 				res.statusCode = 401;
 				return new ErrorResponse(e.message);
 			}

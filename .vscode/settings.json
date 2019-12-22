@@ -13,5 +13,8 @@
 		"**/.settings": true,
 		"**/.factorypath": true
 	},
-	"jest.autoEnable": false
+	"jest.autoEnable": false,
+	"editor.codeActionsOnSave": {
+		"source.fixAll.eslint": true
+	}
 }

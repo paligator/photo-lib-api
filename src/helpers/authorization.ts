@@ -15,6 +15,7 @@ function generateToken(user: IUser): string {
 	const token = jwt.sign(
 		{
 			user: user.id,
+			username: user.name,
 			email: user.email,
 			roles: user.roles
 		},
@@ -51,6 +52,7 @@ async function parseGoogleToken(token: string): Promise<GoogleTokenData> {
 			throw new C.PhotoAuthenticationError(`Google token '${token}' is not valid`);
 		}
 	} catch (e) {
+		C.logE("parseGoogleToken error: ", e);
 		throw new C.PhotoAuthenticationError(`Google token '${token}' cannot be decoded.`);
 	}
 }
