@@ -5,11 +5,12 @@ import * as C from "../helpers/common";
 import config from "config";
 import fsnativ from "fs";
 import path from "path";
-import Album, { IAlbum, IPhoto } from "../models/album.model";
+import Album, { IAlbum, IPhoto, IComment } from "../models/album.model";
 import { ExifImage, ExifData } from "exif";
 import { getRedisClient } from "../helpers/redis-client";
 import { PhotoTag } from "../helpers/enums";
 import { AlbumService } from "../service";
+import { RequestContext } from "../types/temporaryAll";
 
 export default class PhotoService {
 
@@ -27,7 +28,8 @@ export default class PhotoService {
 		if (!photo) {
 			photo = {
 				name: photoName,
-				tags: addTags
+				comments: null,
+				tags: addTags,
 			};
 			album.photos.push(photo);
 		} else {
@@ -47,6 +49,33 @@ export default class PhotoService {
 		return true;
 	}
 
+	public static async addPhotoComment(context: RequestContext, albumId: string, photoName: string, comment: string): Promise<boolean> {
+		const album: IAlbum = await Album.findOne({ _id: albumId });
+
+		let photo: IPhoto = album.photos.find((photo) => { return photo.name === photoName; });
+
+		const newComment: IComment = {
+			comment,
+			username: context.userName,
+			userEmail: context.userEmail,
+		};
+
+		if (!photo) {
+			photo = {
+				name: photoName,
+				comments: [newComment],
+				tags: [],
+			};
+			album.photos.push(photo);
+		} else {
+			photo.comments.push(newComment);
+		}
+
+		await album.save();
+
+		return true;
+	}
+
 	public static async getPhotoDetails(albumId: string, photoName: string): Promise<IPhoto> {
 		if (C.strIsEmtpy(albumId) || C.strIsEmtpy(photoName)) {
 			throw new C.PhotoError("Invalid request data");
@@ -58,6 +87,7 @@ export default class PhotoService {
 		return photo;
 
 	}
+
 
 	public static async getPhotosByTags(albumName: string, tags: string[]) {
 

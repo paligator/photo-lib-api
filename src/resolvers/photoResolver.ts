@@ -19,5 +19,9 @@ export default {
 			doAuthorization(context, UserRoles.Editor, "Mutation.setPhotoTags");
 			return await PhotoService.setPhotoTags(albumId, photoName, addTags, removeTags);
 		},
+		addPhotoComment: async (parent: any, { albumId, photoName, comment }: any, context: any) => {
+			doAuthorization(context, UserRoles.Editor, "Mutation.addPhotoComment");
+			return await PhotoService.addPhotoComment(context, albumId, photoName, comment);
+		},
 	}
 };

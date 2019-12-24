@@ -3,6 +3,7 @@ import { gql } from "apollo-server-express";
 export default gql`
   extend type Mutation {
     setPhotoTags(albumId: ID!, photoName: String!, addTags: [String], removeTags: [String]): Boolean
+    addPhotoComment(albumId: ID!, photoName: String!, comment: String!): Boolean
   }
 
   extend type Query {
@@ -12,11 +13,18 @@ export default gql`
 
   type Photo {
     tags: [String]
+    comments: [Comment]
 	}	
+
+  type Comment {
+    username: String!
+    userEmail: String!
+    comment: String!
+  }
 
   type TagPhotoGroup {
     tag: String,
-    photos: [String]
+    photos: [String],
   }
 
 `;

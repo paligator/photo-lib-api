@@ -14,6 +14,15 @@ export interface IAlbum extends Document {
 export interface IPhoto {
 	name: string;
 	tags: string[];
+	comments: IComment[];
+}
+
+export interface IComment {
+	username: string;
+	userEmail: string;
+	// createDate: Date;
+	// modifyDate: Date;
+	comment: string;
 }
 
 export const AlbumSchema = new Schema({
@@ -27,7 +36,17 @@ export const AlbumSchema = new Schema({
 		{
 			_id: false,
 			name: { type: String, unique: true, index: true },
-			tags: []
+			tags: [],
+			comments: [
+				{
+					_id: false,
+					username: { type: String, required: true },
+					userEmail: { type: String, required: true },
+					// createDate: { type: Date, required: false, default: moment() },
+					// modifyDate: { type: Date },
+					comment: { type: String, required: true, max: 300 }
+				}
+			],
 		}
 	]
 }, { timestamps: true });

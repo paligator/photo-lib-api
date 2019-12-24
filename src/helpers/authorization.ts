@@ -91,7 +91,7 @@ async function createContext(req: any): Promise<any> {
 			const context: RequestContext =
 			{
 				userId: currentUser.id,
-				userName: currentUser.userName,
+				userName: currentUser.username,
 				userEmail: currentUser.email,
 				userRoles: currentUser.roles
 			};
