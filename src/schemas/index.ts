@@ -5,6 +5,10 @@ import photoSchema from "./photoSchema";
 
 const linkSchema = gql`
   
+  directive @constraint(
+    maxLength: Int
+  ) on FIELD_DEFINITION | ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
   # Without this in schema type DateTime couldn't be used
   scalar DateTime
 

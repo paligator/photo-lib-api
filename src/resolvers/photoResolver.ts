@@ -23,5 +23,9 @@ export default {
 			doAuthorization(context, UserRoles.Editor, "Mutation.addPhotoComment");
 			return await PhotoService.addPhotoComment(context, albumId, photoName, comment);
 		},
+		deletePhotoComment: async (parent: any, { albumId, photoName, commentId }: any, context: any) => {
+			doAuthorization(context, UserRoles.Editor, "Mutation.deletePhotoComment");
+			return await PhotoService.deletePhotoComment(context.userEmail, albumId, photoName, commentId);
+		},
 	}
 };

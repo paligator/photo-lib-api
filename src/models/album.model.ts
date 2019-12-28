@@ -1,4 +1,5 @@
 import mongoose, { Schema, Document } from "mongoose";
+import ObjectId = Schema.Types.ObjectId;
 
 export interface IAlbum extends Document {
 	continent: string;
@@ -18,10 +19,10 @@ export interface IPhoto {
 }
 
 export interface IComment {
+	_id?: ObjectId;
 	username: string;
 	userEmail: string;
-	// createDate: Date;
-	// modifyDate: Date;
+	createDate?: Date;
 	comment: string;
 }
 
@@ -38,12 +39,10 @@ export const AlbumSchema = new Schema({
 			name: { type: String, unique: true, index: true },
 			tags: [],
 			comments: [
-				{
-					_id: false,
+				{					
 					username: { type: String, required: true },
 					userEmail: { type: String, required: true },
-					// createDate: { type: Date, required: false, default: moment() },
-					// modifyDate: { type: Date },
+					createDate: { type: Date, required: false, default: Date.now },
 					comment: { type: String, required: true, max: 300 }
 				}
 			],
