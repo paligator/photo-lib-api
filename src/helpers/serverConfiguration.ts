@@ -12,14 +12,16 @@ import config from "config";
 import { RequestContext, RequestUser } from "../types";
 import routes from "../routes";
 import compression from "compression";
-
 import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
+import ConstraintDirective from "graphql-constraint-directive";
+
 
 function createApolloServer(): ApolloServer {
 	const apolloServer = new ApolloServer({
 		typeDefs: schema,
 		resolvers,
+		schemaDirectives: { constraint: ConstraintDirective },
 		context: async ({ req }) => {
 			const context: RequestContext = await createContext(req);
 			return context || {};

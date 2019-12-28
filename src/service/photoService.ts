@@ -5,11 +5,12 @@ import * as C from "../helpers/common";
 import config from "config";
 import fsnativ from "fs";
 import path from "path";
-import Album, { IAlbum, IPhoto } from "../models/album.model";
+import Album, { IAlbum, IPhoto, IComment } from "../models/album.model";
 import { ExifImage, ExifData } from "exif";
 import { getRedisClient } from "../helpers/redis-client";
 import { PhotoTag } from "../helpers/enums";
 import { AlbumService } from "../service";
+import { RequestContext } from "../types/temporaryAll";
 
 export default class PhotoService {
 
@@ -27,7 +28,8 @@ export default class PhotoService {
 		if (!photo) {
 			photo = {
 				name: photoName,
-				tags: addTags
+				comments: null,
+				tags: addTags,
 			};
 			album.photos.push(photo);
 		} else {
@@ -47,6 +49,61 @@ export default class PhotoService {
 		return true;
 	}
 
+	public static async addPhotoComment(context: RequestContext, albumId: string, photoName: string, comment: string): Promise<string> {
+
+		const album: IAlbum = await Album.findOne({ _id: albumId });
+		let photo: IPhoto = album.photos.find((photo) => { return photo.name === photoName; });
+
+		const newComment: IComment = {		
+			comment,
+			username: context.userName,
+			userEmail: context.userEmail,
+		};
+
+		if (!photo) {
+			photo = {
+				name: photoName,
+				comments: [newComment],
+				tags: [],
+			};
+			album.photos.push(photo);
+		} else {
+			photo.comments.push(newComment);
+		}
+
+		await album.save();
+
+		const newCommentId = photo.comments[photo.comments.length - 1]._id;
+
+		return newCommentId.toString();
+	}
+
+	public static async deletePhotoComment(requesterEmail: string, albumId: string, photoName: string, commentID: string): Promise<boolean> {
+		const album: IAlbum = await Album.findOne({ _id: albumId });
+		const photo: IPhoto = album.photos.find((photo) => { return photo.name === photoName; });
+
+		if (!photo) {
+			throw new C.PhotoError(`Photo ${photoName} doesn't exists in album ${albumId}`);
+		}
+
+		const comment: IComment = photo.comments.find(comment => { return comment._id.toString() === commentID; });
+		if (!comment) {
+			throw new C.PhotoError(`Photo ${photoName} in album ${albumId} doesn't have comment ${commentID}`);
+		}
+
+		if (comment.userEmail !== requesterEmail) {
+			C.logE(`User ${requesterEmail} wants to delete comment of user ${comment.userEmail}`);
+			throw new C.PhotoAuthenticationError("You can delete only your comments!");
+		}
+
+		photo.comments = photo.comments.filter(comment => { return comment._id.toString() !== commentID; });
+		await album.save();
+
+		C.logI(`Comment was deleted: ${JSON.stringify(comment)}`);
+
+		return true;
+	}
+
 	public static async getPhotoDetails(albumId: string, photoName: string): Promise<IPhoto> {
 		if (C.strIsEmtpy(albumId) || C.strIsEmtpy(photoName)) {
 			throw new C.PhotoError("Invalid request data");
@@ -55,8 +112,11 @@ export default class PhotoService {
 		const album: IAlbum = await Album.findOne({ _id: albumId });
 		const photo: IPhoto = album.photos.find((photo) => { return photo.name === photoName; });
 
-		return photo;
+		if (!photo) {
+			throw new C.PhotoError(`Photo ${albumId} in album ${photoName} doesn't exists`);
+		}
 
+		return photo;
 	}
 
 	public static async getPhotosByTags(albumName: string, tags: string[]) {
