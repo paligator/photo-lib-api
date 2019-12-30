@@ -25,6 +25,7 @@ module.exports = {
 		'@typescript-eslint/explicit-function-return-type': 'off',
 		'@typescript-eslint/interface-name-prefix': 'off',
 		'@typescript-eslint/no-inferrable-types': 'off',
+		'@typescript-eslint/no-use-before-define': 'off',
 		/*TODO toto je len docasne */
 		'@typescript-eslint/no-explicit-any': [0],
 		'linebreak-style': [

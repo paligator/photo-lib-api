@@ -6,7 +6,6 @@ import fsnativ from "fs";
 import path from "path";
 import { getRedisClient } from "../helpers/redis-client";
 
-
 @Path("/photo")
 class PhotoRoute {
 
@@ -18,13 +17,13 @@ class PhotoRoute {
 	@GET
 	public async test(): Promise<any> {
 		try {
-
+			//emit(EVENT_SEND_EMAIL, { to: "paligator@gmail.com", subject: "test xx", body: "<b>Hello world ?</b>" });
 			C.logI("ale som tu a testujem:)");
-
 		} catch (err) {
 			throw new C.PhotoError("Problem with test", err);
 		}
 	}
+
 
 	@Path("thumb/:imagePath(*)")
 	@GET
@@ -78,12 +77,6 @@ class PhotoRoute {
 	@GET
 	public async getPreview(@PathParam("imagePath") imagePath: string, @ContextResponse res: express.Response): Promise<any> {
 		try {
-
-			// if (imagePath.endsWith("2019-04-14__11-59-46__0005.JPG")) {
-			// 	throw new C.PhotoError("Umela chyba");
-			// }
-
-			//await C.waitFor(3000);
 
 			const imagePathParsed = path.parse(imagePath);
 			const imageUrl = path.join(this.storageUrl, imagePathParsed.dir, "prevs", imagePathParsed.base);

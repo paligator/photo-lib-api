@@ -7,6 +7,7 @@ import cors from "cors";
 import { ApolloServer } from "apollo-server-express";
 import * as serverConfig from "./helpers/serverConfiguration";
 import * as http from "http";
+import { initSubscribers } from "./helpers/events";
 
 
 const app: express.Application = express();
@@ -28,8 +29,10 @@ process.on("unhandledRejection", serverConfig.handleUnhandledErrors());
 
 /** Start application */
 const port = config.get("server.port");
-const server: http.Server = app.listen(port, (): void => {
+const server: http.Server = app.listen(port, async (): Promise<void> => {
 	C.logI(`*****************            Started webserver on port ${port} with ${process.env.NODE_ENV}            *****************`);
+	await database.connect();
+	await initSubscribers();
 });
 
 process.on("SIGTERM", () => {
@@ -42,6 +45,5 @@ process.on("SIGTERM", () => {
 	});
 });
 
-database.connect();
 
 export { app };
