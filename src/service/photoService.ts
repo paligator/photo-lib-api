@@ -114,10 +114,6 @@ export default class PhotoService {
 		const album: IAlbum = await Album.findOne({ _id: albumId });
 		const photo: IPhoto = album.photos.find((photo) => { return photo.name === photoName; });
 
-		if (!photo) {
-			throw new C.PhotoError(`Photo ${albumId} in album ${photoName} doesn't exists`);
-		}
-
 		return photo;
 	}
 
