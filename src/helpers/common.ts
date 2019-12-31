@@ -2,7 +2,6 @@ import { Errors } from "typescript-rest";
 import fs from "fs";
 import path from "path";
 import moment from "moment";
-
 import { getLogger } from "./logger";
 import config from "config";
 import appRootPath from "app-root-path";
@@ -12,7 +11,7 @@ class PhotoError extends Errors.HttpError {
 
 	// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 	// @ts-ignore TS6133
-	private __proto__: Errors.HttpError; 	private details: Error;
+	private __proto__: Errors.HttpError; private details: Error;
 
 	public constructor(message?: string, statusCodeOrDetails1: number | any = 500, statusCodeOrDetails2: any | number = undefined) {
 		const trueProto = new.target.prototype;
@@ -199,5 +198,5 @@ export {
 	getMaxDate,
 	getPhotoLibUrl,
 	getPath,
-	hasEnumValue, hasEnumValues
+	hasEnumValue, hasEnumValues,
 };

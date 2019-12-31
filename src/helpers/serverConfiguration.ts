@@ -127,7 +127,7 @@ function handleApplicationError() {
 }
 
 function handleUnhandledErrors() {
-	//TODO: not sure if i need it, maybe put it into some try-catch.. 	
+	//maybe put it into some try-catch.. 	
 	return (reason: any): void => {
 		C.logE(`Unhandled Rejection at: ${reason.stack || reason}`);
 	};

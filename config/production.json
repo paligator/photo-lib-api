@@ -13,5 +13,10 @@
 	},
 	"db": {
 		"connectionString": "SECRET db.connectionString"
+	},
+	"email": {
+		"enabled": true,
+		"username": "SECRET email.username",
+		"password": "SECRET email.password"
 	}
 }

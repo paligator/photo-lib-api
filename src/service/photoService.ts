@@ -11,6 +11,7 @@ import { getRedisClient } from "../helpers/redis-client";
 import { PhotoTag } from "../helpers/enums";
 import { AlbumService } from "../service";
 import { RequestContext } from "../types/temporaryAll";
+import { emit, EVENT_SEND_EMAIL } from "../helpers/events";
 
 export default class PhotoService {
 
@@ -54,7 +55,7 @@ export default class PhotoService {
 		const album: IAlbum = await Album.findOne({ _id: albumId });
 		let photo: IPhoto = album.photos.find((photo) => { return photo.name === photoName; });
 
-		const newComment: IComment = {		
+		const newComment: IComment = {
 			comment,
 			username: context.userName,
 			userEmail: context.userEmail,
@@ -74,6 +75,7 @@ export default class PhotoService {
 		await album.save();
 
 		const newCommentId = photo.comments[photo.comments.length - 1]._id;
+		emit(EVENT_SEND_EMAIL, { to: config.get("email.newPhotoCommentReceiver"), subject: `New Comment on ${album.name} / ${photoName}`, body: `From: ${context.userName} (${context.userEmail}):  ${comment}` });
 
 		return newCommentId.toString();
 	}

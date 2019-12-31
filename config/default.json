@@ -29,5 +29,12 @@
     "colors": {
       "info": "default"
     }
+  },
+  "email": {
+    "sendingEmailsEnabled": false,
+    "from": "Paligator Photo Library",
+    "username": "FakeUsername",
+    "password": "Password123",
+    "newPhotoCommentReceiver": "paligator@gmail.com"
   }
 }
