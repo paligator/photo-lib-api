@@ -52,7 +52,7 @@ export default class PhotoService {
 
 	public static async addPhotoComment(context: RequestContext, albumId: string, photoName: string, comment: string): Promise<string> {
 
-		const album: IAlbum = await Album.findOne({ _id: albumId });
+		let album: IAlbum = await Album.findOne({ _id: albumId });
 		let photo: IPhoto = album.photos.find((photo) => { return photo.name === photoName; });
 
 		const newComment: IComment = {
@@ -63,22 +63,22 @@ export default class PhotoService {
 
 		if (!photo) {
 			photo = {
-				name: photoName,
-				comments: [],
-				tags: [],
+				name: photoName
 			};
 			album.photos.push(photo);
-		} else {
-			if(!photo.comments) {
-				photo.comments = [];
-			}		
+		}
+
+		if (!photo.comments) {
+			photo.comments = [];
 		}
 
 		photo.comments.push(newComment);
 
-		await album.save();
-
+		//beacause for comments on newly added photo, comment's _id wasn't added
+		album = await album.save();
+		photo = album.photos.find((photo) => { return photo.name === photoName; });
 		const newCommentId = photo.comments[photo.comments.length - 1]._id;
+
 		emit(EVENT_SEND_EMAIL, { to: config.get("email.newPhotoCommentReceiver"), subject: `New Comment on ${album.name} / ${photoName}`, body: `From: ${context.userName} (${context.userEmail}):  ${comment}` });
 
 		return newCommentId.toString();

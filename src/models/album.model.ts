@@ -13,9 +13,9 @@ export interface IAlbum extends Document {
 }
 
 export interface IPhoto {
-	name: string;
-	tags: string[];
-	comments: IComment[];
+	name?: string;
+	tags?: string[];
+	comments?: IComment[];
 }
 
 export interface IComment {
