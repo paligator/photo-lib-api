@@ -64,17 +64,21 @@ export default class PhotoService {
 		if (!photo) {
 			photo = {
 				name: photoName,
-				comments: [newComment],
-				tags: [],
+				comments: [newComment]
 			};
 			album.photos.push(photo);
 		} else {
+			if (!photo.comments) {
+				photo.comments = [];
+			}
 			photo.comments.push(newComment);
 		}
 
+		//beacause for comments on newly added photo, comment's _id wasn't added
 		await album.save();
-
+		photo = album.photos.find((photo) => { return photo.name === photoName; });
 		const newCommentId = photo.comments[photo.comments.length - 1]._id;
+
 		emit(EVENT_SEND_EMAIL, { to: config.get("email.newPhotoCommentReceiver"), subject: `New Comment on ${album.name} / ${photoName}`, body: `From: ${context.userName} (${context.userEmail}):  ${comment}` });
 
 		return newCommentId.toString();

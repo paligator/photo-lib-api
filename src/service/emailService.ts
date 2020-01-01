@@ -27,7 +27,7 @@ export async function sendEmail(to: string, subject: string, body: string) {
 	const email: Mail.Options = {
 		from: config.get("email.from"),
 		to,
-		subject: (env === "production") ? subject : `${env} - ${subject}`,
+		subject: (env === "production") ? `Photo-Lib: ${subject}` : `Photo-Lib - ${env}: ${subject}`,
 		text: body,
 		html: body,
 	};
