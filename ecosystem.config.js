@@ -9,9 +9,6 @@ module.exports = {
 		watch: false,
 		max_memory_restart: '500M',
 		merge_logs: true,
-		error_file: 'photo-lib-api_error.log',
-		out_file: 'photo-lib-api_out.log',
-		log_file: 'photo-lib-api_combined.log',
 		env: {
 			NODE_ENV: 'development'
 		},
