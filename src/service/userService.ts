@@ -19,6 +19,9 @@ export default class UserService {
 	}
 
 	public static async createUser(user: IUser): Promise<IUser> {
+
+		C.logI(`Create new user: ${user.email} ${user.name} ${user.roles} ${user.authentication}`);
+
 		const userDb = new User({
 			email: user.email,
 			name: user.name,
@@ -28,6 +31,9 @@ export default class UserService {
 		});
 
 		await userDb.save();
+
+		C.logI(`Created new user: ${userDb._id.toString()}`);
+
 		return userDb;
 	}
 

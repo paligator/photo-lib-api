@@ -32,6 +32,7 @@ async function verifyToken(token: string): Promise<any> {
 
 async function parseGoogleToken(token: string): Promise<GoogleTokenData> {
 	try {
+		C.logI(`Parse google token: ${token}`);
 		const googleClientID: string = config.get("authorization.googleOAuthClientID");
 		const client = new OAuth2Client(googleClientID);
 		const ticket = await client.verifyIdToken({
@@ -40,6 +41,7 @@ async function parseGoogleToken(token: string): Promise<GoogleTokenData> {
 		});
 
 		const payload = ticket.getPayload();
+		C.logI(`Parsed google token: ${JSON.stringify(payload)}`);
 
 		if (payload && payload.email_verified === true) {
 			const data: GoogleTokenData = {
