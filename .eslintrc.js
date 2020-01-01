@@ -41,6 +41,7 @@ module.exports = {
 			'always'
 		],
 		'no-console': 'warn',
-		'interface-name': [0, 'never']
+		'interface-name': [0, 'never'],
+		'prefer-const': 'warn'
 	}
 };

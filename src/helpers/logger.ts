@@ -1,7 +1,7 @@
 import winston from "winston";
 import config from "config";
 import moment from "moment";
-import SPLAT from "triple-beam";
+import { SPLAT } from "triple-beam";
 
 let myLogger: winston.Logger;
 
@@ -27,7 +27,7 @@ function formatSplat(info: object): string {
 		const parsedSplat: string[] = info[SPLAT];
 		if (parsedSplat) {
 			//TODO: I haven't found better way how force logger to log json on multiple lines, especially i had a problem to log graphql request body
-			splat = JSON.stringify(splat)
+			splat = JSON.stringify(parsedSplat)
 				.replace(/\\n/g, "\n")
 				.replace(/\\r/g, "\r")
 				.replace(/\\t/g, "\t")
