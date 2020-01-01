@@ -46,7 +46,7 @@ async function parseGoogleToken(token: string): Promise<GoogleTokenData> {
 		if (payload && payload.email_verified === true) {
 			const data: GoogleTokenData = {
 				email: payload.email,
-				name: payload.name
+				name: (payload.name)? payload.name : payload.email.split("@")[0]
 			};
 
 			return data;
@@ -58,6 +58,7 @@ async function parseGoogleToken(token: string): Promise<GoogleTokenData> {
 		throw new C.PhotoAuthenticationError(`Google token '${token}' cannot be decoded.`);
 	}
 }
+
 
 function doAuthorization(context: RequestContext, reqRole: string, operation: string = ""): boolean {
 
