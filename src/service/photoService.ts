@@ -64,13 +64,17 @@ export default class PhotoService {
 		if (!photo) {
 			photo = {
 				name: photoName,
-				comments: [newComment],
+				comments: [],
 				tags: [],
 			};
 			album.photos.push(photo);
 		} else {
-			photo.comments.push(newComment);
+			if(!photo.comments) {
+				photo.comments = [];
+			}		
 		}
+
+		photo.comments.push(newComment);
 
 		await album.save();
 
