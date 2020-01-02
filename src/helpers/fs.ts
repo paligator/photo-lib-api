@@ -39,7 +39,7 @@ async function getImages(folder: any): Promise<string[]> {
 
 function mkdir(path: any): void {
 	if (!fs.existsSync(path)) {
-		fs.mkdirSync(path);
+		fs.mkdirSync(path, { recursive: true });
 	}
 }
 
@@ -51,7 +51,7 @@ function mkdir(path: any): void {
  */
 function rmdir(path: any, rf: boolean = false): void {
 	if (fs.existsSync(path)) {
-		if(rf === true) {
+		if (rf === true) {
 			rimraf.sync(path);
 		} else {
 			fs.rmdirSync(path);

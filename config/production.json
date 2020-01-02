@@ -8,6 +8,7 @@
 		"googleOAuthClientID": "SECRET authorization.googleOAuthClientID"
 	},
 	"paths": {
+		"tmpFolder": "/home/photolib/photo-lib/.tmp",
 		"photoFolder": "SECRET paths.photoFolder",
 		"photoUrl": "http://78.98.51.97:5687"
 	},

@@ -5,6 +5,7 @@ import moment from "moment";
 import { getLogger } from "./logger";
 import config from "config";
 import appRootPath from "app-root-path";
+import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 
 //Why like this, there was wrong behaviour with instnceOf https://github.com/Microsoft/TypeScript/issues/13896 when process error in application level
 class PhotoError extends Errors.HttpError {
@@ -182,6 +183,34 @@ function hasEnumValues(checkedEnum: any, values: string[], silent: boolean = tru
 	return true;
 }
 
+async function getCurrentIp(): Promise<string> {
+
+	let response: AxiosResponse;
+
+	try {
+		const req: AxiosRequestConfig = {
+			method: "get",
+			url: "https://api.ipify.org/?format=json",
+			headers: {
+				Accept: "application/json",
+				"Content-Type": "application/json"
+			}
+		};
+		response = await axios(req);
+	} catch (e) {
+		logE("Error get current ip address: ", e);
+		return null;
+	}
+
+	if (response && response.status === 200 && response.data && response.data.ip) {
+		logI(`Current ip address is: "${response.data.ip}"`);
+		return response.data.ip;
+	} else {
+		logE(`Something wrong to get current ip address: ${JSON.stringify(response)}`);
+		return null;
+	}
+}
+
 
 export {
 	PhotoError, PhotoAuthenticationError,
@@ -199,4 +228,5 @@ export {
 	getPhotoLibUrl,
 	getPath,
 	hasEnumValue, hasEnumValues,
+	getCurrentIp
 };

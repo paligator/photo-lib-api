@@ -10,6 +10,7 @@
     "googleOAuthClientID": "xxxxx"
   },
   "paths": {
+    "tmpFolder": "c:\\temp\\xxx\\yyy",
     "photoFolder": "Z:\\Foto",
     "photoUrl": "http://192.168.1.11:5687"
   },
@@ -35,6 +36,13 @@
     "from": "Paligator Photo Library",
     "username": "FakeUsername",
     "password": "Password123",
-    "newPhotoCommentReceiver": "paligator@gmail.com"
+    "newPhotoCommentReceiver": "paligator@gmail.com",
+    "updatedIpReceiver": "paligator@gmail.com"
+  },
+  "schedulers": {
+    "updateIp": {
+      "enabled": true,
+      "cron": "0 */10 * * * *"
+    }
   }
 }

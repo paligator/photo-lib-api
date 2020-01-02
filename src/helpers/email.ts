@@ -1,5 +1,5 @@
 import config from "config";
-import * as C from "../helpers/common";
+import * as C from "./common";
 import nodemailer from "nodemailer";
 import Mail from "nodemailer/lib/mailer";
 

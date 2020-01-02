@@ -1,6 +1,6 @@
 import events from "events";
 import * as C from "../helpers/common";
-import { sendEmailSubscription } from "../service/emailService";
+import { sendEmailSubscription } from "./email";
 
 const eventEmitter = new events.EventEmitter();
 
@@ -13,7 +13,6 @@ export function emit(eventName: string, eventArgs: any) {
 		C.logI(`Events -> emit '${eventName}' started`);
 		//TODO: Think about async function and log finish
 		eventEmitter.emit(eventName, eventArgs);
-		//C.logI(`Events -> emit '${eventName}' finished `);
 	} catch (e) {
 		C.logE(`Events -> emit '${eventName}' error`, e);
 	}
@@ -25,6 +24,8 @@ function subscribe(eventKey: string, handler: (...args: any[]) => void) {
 }
 
 export function initSubscribers() {
+	C.logI("Events -> start init subscribers");
 	subscribe(EVENT_SEND_EMAIL, sendEmailSubscription);
+	C.logI("Events -> end init subscribers");
 }
 

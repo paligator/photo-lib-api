@@ -8,6 +8,7 @@ import { ApolloServer } from "apollo-server-express";
 import * as serverConfig from "./helpers/serverConfiguration";
 import * as http from "http";
 import { initSubscribers } from "./helpers/events";
+import { initSchedulers } from "./helpers/schedulers";
 
 
 const app: express.Application = express();
@@ -33,6 +34,7 @@ const server: http.Server = app.listen(port, async (): Promise<void> => {
 	C.logI(`*****************            Started webserver on port ${port} with ${process.env.NODE_ENV}            *****************`);
 	await database.connect();
 	await initSubscribers();
+	await initSchedulers();
 });
 
 process.on("SIGTERM", () => {
