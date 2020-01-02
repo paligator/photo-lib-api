@@ -2,10 +2,6 @@
 
 //TODO: do types properly, not only any everywhere :(
 
-//TODO: types into domains	
-
-//TODO: think about secure images
-
 //TODO: swagger
 It would be great it library typescript-rest-swagger worked preoperly and i can use command
 swaggerGen -c ./swaggerConfig.json -p ./tsconfig.json
@@ -14,8 +10,6 @@ to generate swagger documentation from annotation from "typescript-rest"
 //TODO: TESTS!!!
 
 //TODO: some report from tsc build
-
-//TODO: package script: so many useless
 
 //TODO: add more silly and debug information
 
@@ -26,3 +20,5 @@ to generate swagger documentation from annotation from "typescript-rest"
 //in prev are store thumbnail created by camera, would be cool to delete in order to rezise prev size
 
 //rework throw error on EventEmiter emit/on
+
+//schedulers don't work properly because, they run on two instances
