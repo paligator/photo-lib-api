@@ -6,30 +6,30 @@ async function connect(): Promise<string> {
 	const mongoDBUrl: string = config.get("db.connectionString");
 
 	// parameters are there to get rid of deprecation warnings in logs
-	mongoose.connect(mongoDBUrl, { useNewUrlParser: true, useFindAndModify: false, useCreateIndex: true,  useUnifiedTopology: true });
+	mongoose.connect(mongoDBUrl, { useNewUrlParser: true, useFindAndModify: false, useCreateIndex: true, useUnifiedTopology: true });
 	mongoose.Promise = global.Promise;
 	const db = mongoose.connection;
 
 	db.on("SIGINT", function (): void {
 		db.close(function (): void {
-			C.logI("db connection closed due to process termination");
+			C.logI("Mongo -> db connection closed due to process termination");
 			process.exit(0);
 		});
 	});
 
 	return new Promise((resolve, reject): void => {
 		db.on("connected", function (): void {
-			C.logI("connected to mongo database");
+			C.logI("Mongo -> connected to database");
 			return resolve("connected");
 		});
 
 		db.on("disconnected", function (): void {
-			C.logI("disconnected to mongo database");
+			C.logI("Mongo -> disconnected from database");
 			return reject("disconnected");
 		});
 
 		db.on("error", function (error: any): void {
-			C.logI("mongo connection connection error", error);
+			C.logI("Mongo -> connection error", error);
 			return reject("error");
 		});
 	});

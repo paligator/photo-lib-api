@@ -31,10 +31,11 @@ process.on("unhandledRejection", serverConfig.handleUnhandledErrors());
 /** Start application */
 const port = config.get("server.port");
 const server: http.Server = app.listen(port, async (): Promise<void> => {
-	C.logI(`*****************            Started webserver on port ${port} with ${process.env.NODE_ENV}            *****************`);
+	C.logI(`*****************            PhotoLib API started on port ${port} with ${process.env.NODE_ENV}            *****************`);
 	await database.connect();
 	await initSubscribers();
 	await initSchedulers();
+	C.logI("*****************            PhotoLib API init configuration has ended            *****************");
 });
 
 process.on("SIGTERM", () => {
