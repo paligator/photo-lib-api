@@ -4,6 +4,7 @@ import moment from "moment";
 import { SPLAT } from "triple-beam";
 
 let myLogger: winston.Logger;
+const intanceId = process.env.NODE_APP_INSTANCE;
 
 //TODO: rework to class
 
@@ -57,7 +58,7 @@ function getLogger(): winston.Logger {
 		format: combine(
 			colorize({ all: true }),
 			printf((info): string => {
-				return `${moment(Date.now()).format("DD.MM.YYYY HH:mm:ss")} - ${info.level} : ${info.message}	${formatSplat(info)}`;
+				return `${intanceId} ${moment(Date.now()).format("DD.MM.YYYY HH:mm:ss")} - ${info.level} : ${info.message}	${formatSplat(info)}`;
 			})
 		),
 		transports: [new winston.transports.Console()]

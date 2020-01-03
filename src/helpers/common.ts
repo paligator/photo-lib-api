@@ -203,7 +203,7 @@ async function getCurrentIp(): Promise<string> {
 	}
 
 	if (response && response.status === 200 && response.data && response.data.ip) {
-		logI(`Current ip address is: "${response.data.ip}"`);
+		logD(`Current ip address is: "${response.data.ip}"`);
 		return response.data.ip;
 	} else {
 		logE(`Something wrong to get current ip address: ${JSON.stringify(response)}`);

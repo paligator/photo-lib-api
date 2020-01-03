@@ -8,7 +8,7 @@ import path from "path";
 
 export async function updateIpAddress() {
 
-	C.logI("UpdateIpAddress started");
+	C.logD("UpdateIpAddress started");
 
 	const currentIp: string = await C.getCurrentIp();
 	const tmpFolder: string = config.get("paths.tmpFolder");
