@@ -3,6 +3,15 @@ import * as C from "./common";
 import nodemailer from "nodemailer";
 import Mail from "nodemailer/lib/mailer";
 
+const env = process.env.NODE_ENV;
+const transporter: nodemailer.Transporter = nodemailer.createTransport({
+	host: "localhost",
+	port: 25,
+	tls: {
+		rejectUnauthorized: false
+	}
+});
+
 export async function sendEmailSubscription(args: any) {
 	await sendEmail(args.to, args.subject, args.body);
 }
@@ -16,14 +25,6 @@ export async function sendEmail(to: string, subject: string, body: string) {
 		return;
 	}
 
-	const env = process.env.NODE_ENV;
-	const transporter: nodemailer.Transporter = nodemailer.createTransport({
-		service: "gmail",
-		auth: {
-			user: config.get("email.username"),
-			pass: config.get("email.password")
-		}
-	});
 	const email: Mail.Options = {
 		from: config.get("email.from"),
 		to,

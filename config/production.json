@@ -16,8 +16,6 @@
 		"connectionString": "SECRET db.connectionString"
 	},
 	"email": {
-		"sendingEmailsEnabled": true,
-		"username": "SECRET email.username",
-		"password": "SECRET email.password"
+		"sendingEmailsEnabled": true	
 	}
 }

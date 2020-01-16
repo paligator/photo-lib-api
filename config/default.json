@@ -33,9 +33,8 @@
   },
   "email": {
     "sendingEmailsEnabled": false,
-    "from": "Paligator Photo Library",
-    "username": "FakeUsername",
-    "password": "Password123",
+    "from": "My Dreams Come True <admin@paligator.sk>", 
+    "newGmailUserReceiver": "paligator@gmail.com", 
     "newPhotoCommentReceiver": "paligator@gmail.com",
     "updatedIpReceiver": "paligator@gmail.com"
   },

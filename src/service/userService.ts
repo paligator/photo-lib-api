@@ -4,6 +4,8 @@ import passwordValidator from "password-validator";
 import * as enums from "../helpers/enums";
 import generator from "generate-password";
 import { GoogleTokenData } from "../types";
+import { emit, EVENT_SEND_EMAIL } from "../helpers/events";
+import config from "config";
 
 export default class UserService {
 
@@ -69,7 +71,7 @@ export default class UserService {
 		return user;
 	}
 
-	public static async createUserByGoogleToken(decodedToken: any): Promise<IUser> {
+	public static async createUserByGoogleToken(decodedToken: GoogleTokenData): Promise<IUser> {
 
 		const password = generator.generate({ length: 40, numbers: true, symbols: true, strict: true });
 
@@ -81,7 +83,11 @@ export default class UserService {
 			authentication: enums.Authentication.Google
 		});
 
-		return await this.createUser(newUser);
+		const newDbUser = await this.createUser(newUser);
+
+		emit(EVENT_SEND_EMAIL, { to: config.get("email.newGmailUserReceiver"), subject: `New user "${decodedToken.name} <${decodedToken.email}>" logged in by Gmail`, body: "That's good!" });
+
+		return newDbUser;
 	}
 
 	public static async changeUserPassword(user: IUser, newPassword: string) {
