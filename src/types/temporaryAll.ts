@@ -143,3 +143,10 @@ export interface GoogleTokenData {
 	email: string;
 	name: string;
 }
+
+export interface TokenData {
+	id: Schema.Types.ObjectId;
+	email: string;
+	name: string;
+	roles: [string];
+}

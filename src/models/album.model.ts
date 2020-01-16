@@ -7,6 +7,7 @@ export interface IAlbum extends Document {
 	month: number;
 	name: string;
 	path: string;
+	countries: string[];
 	//FIXME: Do I really neeed files?
 	files: string[];
 	photos: IPhoto[];

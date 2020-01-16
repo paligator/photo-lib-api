@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import config from "config";
 import * as C from "../helpers/common";
 import * as enums from "./enums";
-import { RequestContext, GoogleTokenData } from "../types";
+import { RequestContext, GoogleTokenData, TokenData } from "../types";
 import bcrypt from "bcrypt";
 import { OAuth2Client } from "google-auth-library";
 
@@ -25,9 +25,15 @@ function generateToken(user: IUser): string {
 	return token;
 }
 
-async function verifyToken(token: string): Promise<any> {
-	const result = await jwt.verify(token, config.get("authorization.tokenKey"));
-	return result;
+async function verifyToken(token: string): Promise<TokenData> {
+	const result: any = await jwt.verify(token, config.get("authorization.tokenKey"));
+	const user: TokenData = {
+		id: result.id,
+		name: result.username,
+		email: result.email,
+		roles: result.roles
+	};
+	return user;
 }
 
 async function parseGoogleToken(token: string): Promise<GoogleTokenData> {
@@ -46,7 +52,7 @@ async function parseGoogleToken(token: string): Promise<GoogleTokenData> {
 		if (payload && payload.email_verified === true) {
 			const data: GoogleTokenData = {
 				email: payload.email,
-				name: (payload.name)? payload.name : payload.email.split("@")[0]
+				name: (payload.name) ? payload.name : payload.email.split("@")[0]
 			};
 
 			return data;
@@ -70,14 +76,14 @@ function doAuthorization(context: RequestContext, reqRole: string, operation: st
 }
 
 //FIXME: return Promise<RequestContext>
-async function createContext(req: any): Promise<any> {
+async function createContext(req: any): Promise<RequestContext> | null {
 
 	if (req && req.body && req.body.operationName === "IntrospectionQuery") {
-		return;
+		return null;
 	}
 
 	let authToken = null;
-	let currentUser: any = null;
+	let currentUser: TokenData = null;
 
 	try {
 
@@ -94,14 +100,14 @@ async function createContext(req: any): Promise<any> {
 			const context: RequestContext =
 			{
 				userId: currentUser.id,
-				userName: currentUser.username,
+				userName: currentUser.name,
 				userEmail: currentUser.email,
 				userRoles: currentUser.roles
 			};
 
 			return context;
 		} else {
-			return {};
+			return null;
 		}
 
 	} catch (e) {

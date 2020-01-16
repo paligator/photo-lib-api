@@ -5,6 +5,7 @@ import config from "config";
 import fsnativ from "fs";
 import path from "path";
 import { getRedisClient } from "../helpers/redis-client";
+import { emit, EVENT_SEND_EMAIL } from "../helpers/events";
 
 @Path("/photo")
 class PhotoRoute {
@@ -17,7 +18,7 @@ class PhotoRoute {
 	@GET
 	public async test(): Promise<any> {
 		try {
-			//emit(EVENT_SEND_EMAIL, { to: "paligator@gmail.com", subject: "test xx", body: "<b>Hello world ?</b>" });
+			emit(EVENT_SEND_EMAIL, { to: "paligator@gmail.com", subject: "New Comment cc", body: "From: paligator ('paligator@gmail.com'):  nazdar nazdar" });
 			C.logI("ale som tu a testujem:)");
 		} catch (err) {
 			throw new C.PhotoError("Problem with test", err);

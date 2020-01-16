@@ -28,7 +28,7 @@ async function connect(): Promise<string> {
 			return reject("disconnected");
 		});
 
-		db.on("error", function (error: any): void {
+		db.on("error", function (error: Error): void {
 			C.logI("Mongo -> connection error", error);
 			return reject("error");
 		});
