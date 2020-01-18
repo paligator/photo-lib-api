@@ -42,7 +42,7 @@
     "enabled": false,
     "updateIp": {
       "enabled": true,
-      "cron": "0 */10 * * * *"
+      "cron": "0 0 * * * *"
     }
   }
 }
