@@ -1,0 +1,34 @@
+[Unit]
+Description=GoAccess real-time web log analysis
+After=network.target
+
+[Service]
+Type=simple
+
+ExecStart=/home/pi/goaccess-1.3/goaccess -f /var/log/nginx/photo-lib-api.access.log \
+          --real-time-html --ws-url=wss://paligator.sk:19000/ws \
+          -o /home/pi/www-goaccess/report.html --port=7890 \
+          --config-file=/usr/local/etc/goaccess.conf \
+          --origin=https://paligator.sk:19000
+
+ExecStop=/bin/kill -9 ${MAINPID}
+WorkingDirectory=/tmp
+
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectHome=read-only
+ProtectSystem=strict
+SystemCallFilter=~@clock @cpu-emulation @debug @keyring @memlock @module \
+                  @mount @obsolete @privileged @reboot @resources @setuid \
+                  @swap @raw-io
+
+ReadOnlyPaths=/
+ReadWritePaths=/proc/self
+ReadWritePaths=/home/pi/www-goaccess/
+
+PrivateDevices=yes
+ProtectKernelModules=yes
+ProtectKernelTunables=yes
+
+[Install]
+WantedBy=multi-user.target
