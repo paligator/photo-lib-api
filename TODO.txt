@@ -1,7 +1,3 @@
-//TODO: TODO tree plugin doesn't find in JSON
-
-//TODO: do types properly, not only any everywhere :(
-
 //TODO: swagger
 It would be great it library typescript-rest-swagger worked preoperly and i can use command
 swaggerGen -c ./swaggerConfig.json -p ./tsconfig.json
@@ -13,12 +9,10 @@ to generate swagger documentation from annotation from "typescript-rest"
 
 //TODO: add more silly and debug information
 
-//only pi user can change photoso
+//only pi user can change photo
 
 //endpoints should be prefixed with api
 
 //in prev are store thumbnail created by camera, would be cool to delete in order to rezise prev size
 
 //rework throw error on EventEmiter emit/on
-
-//schedulers don't work properly because, they run on two instances

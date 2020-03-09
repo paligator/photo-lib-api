@@ -25,7 +25,7 @@
     "cachedImageTTL": 259200
   },
   "logger": {
-    "TODO: TODO: It would be better somwhere else, after change, there i don't want to restart": "",
+    "TODO: // TODO: It would be better somwhere else, after change, there i don't want to restart": "",
     "level": "info",
     "colors": {
       "info": "default"
