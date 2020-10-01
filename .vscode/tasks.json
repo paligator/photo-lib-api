@@ -8,6 +8,11 @@
 			"type": "typescript",
 			"tsconfig": "tsconfig.json",
 			"option": "watch",
+			"options": {
+				"shell": {
+					"executable": "powershell.exe"
+				}
+			},
 			"problemMatcher": "$tsc-watch",
 			"isBackground": true,
 			"presentation": {
