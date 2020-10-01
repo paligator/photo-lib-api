@@ -1,5 +1,8 @@
 start applicaiton on local
 
+before first start:
+npm install typescript -g
+
 start mongo server
 start typescript compiler: "ctrl + shift + b" or Terminal -> "Run Build Task..." and select "photolib -> TSC watch"
 start debug: PhotoLib-Local
@@ -26,4 +29,7 @@ user: admin
 password: ....
 best tutorial how to configure https://bytes.fyi/real-time-goaccess-reports-with-nginx/
 to test in command line:  wscat -c "wss://paligator.sk:19000/ws" --auth admin:MGVUeZwqmEkSMYYFkpC9qNSHdwtu9CZv --origin "https://paligator.sk:19000"
+
+
+
 
